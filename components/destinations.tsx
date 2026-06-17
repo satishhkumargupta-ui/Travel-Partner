@@ -160,7 +160,7 @@ export function Destinations({ searchQuery = "", onSelectDestination }: Props) {
           </h2>
         </div>
         <a
-          href="#"
+          href="/#destinations"
           className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
         >
           View all destinations
