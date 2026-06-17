@@ -26,6 +26,7 @@ const columns = [
     links: [
       { label: "Contact", href: "#", isContact: true },
       { label: "FAQs", href: "/faqs" },
+      { label: "Terms & conditions", href: "/terms" },
       { label: "Booking terms", href: "/booking-terms" },
       { label: "Privacy", href: "/privacy" },
     ],
