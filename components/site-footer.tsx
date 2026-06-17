@@ -1,21 +1,40 @@
+"use client"
+
 import { Globe } from "lucide-react"
 
 const columns = [
   {
     title: "Explore",
-    links: ["Destinations", "Curated journeys", "Group tours", "Travel guides"],
+    links: [
+      { label: "Destinations", href: "#destinations" },
+      { label: "Curated journeys", href: "#journeys" },
+      { label: "Group tours", href: "#" },
+      { label: "Travel guides", href: "#" },
+    ],
   },
   {
     title: "Company",
-    links: ["About us", "Our experts", "Sustainability", "Careers"],
+    links: [
+      { label: "About us", href: "#about" },
+      { label: "Our experts", href: "#" },
+      { label: "Sustainability", href: "#" },
+      { label: "Careers", href: "#" },
+    ],
   },
   {
     title: "Support",
-    links: ["Contact", "FAQs", "Booking terms", "Privacy"],
+    links: [
+      { label: "Contact", href: "#", isContact: true },
+      { label: "FAQs", href: "#" },
+      { label: "Booking terms", href: "#" },
+      { label: "Privacy", href: "#" },
+    ],
   },
 ]
 
-export function SiteFooter() {
+type Props = { onContactOpen: () => void }
+
+export function SiteFooter({ onContactOpen }: Props) {
   return (
     <footer className="border-t border-border bg-secondary">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
@@ -36,13 +55,22 @@ export function SiteFooter() {
               <h3 className="text-sm font-semibold text-foreground">{col.title}</h3>
               <ul className="mt-4 flex flex-col gap-3">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {"isContact" in link && link.isContact ? (
+                      <button
+                        onClick={onContactOpen}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -55,15 +83,9 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} Wanderlight. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground">
-              Instagram
-            </a>
-            <a href="#" className="hover:text-foreground">
-              Twitter
-            </a>
-            <a href="#" className="hover:text-foreground">
-              Pinterest
-            </a>
+            <a href="#" className="hover:text-foreground">Instagram</a>
+            <a href="#" className="hover:text-foreground">Twitter</a>
+            <a href="#" className="hover:text-foreground">Pinterest</a>
           </div>
         </div>
       </div>

@@ -10,12 +10,14 @@ import { Newsletter } from "@/components/newsletter"
 import { SiteFooter } from "@/components/site-footer"
 import { DestinationModal } from "@/components/destination-modal"
 import { BookingModal } from "@/components/booking-modal"
+import { ContactModal } from "@/components/contact-modal"
 import type { Destination } from "@/components/destinations"
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null)
   const [bookingOpen, setBookingOpen] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
 
   function handleSearch(query: string) {
     setSearchQuery(query)
@@ -35,14 +37,14 @@ export default function Page() {
       <FeatureSection onBookingOpen={() => setBookingOpen(true)} />
       <Testimonials />
       <Newsletter />
-      <SiteFooter />
+      <SiteFooter onContactOpen={() => setContactOpen(true)} />
 
       <DestinationModal
         destination={selectedDestination}
         onClose={() => setSelectedDestination(null)}
       />
-
       {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
     </main>
   )
 }
