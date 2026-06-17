@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import { MapPin, Calendar, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,7 @@ type Props = {
 export function Hero({ onSearch }: Props) {
   const [destination, setDestination] = useState("")
   const [when, setWhen] = useState("")
+  const dateRef = useRef<HTMLInputElement>(null)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,10 +70,14 @@ export function Hero({ onSearch }: Props) {
               />
             </label>
             <div className="hidden h-8 w-px bg-white/20 sm:block" />
-            <label className="flex flex-1 items-center gap-3 rounded-full px-4 py-2">
+            <label
+              className="flex flex-1 items-center gap-3 rounded-full px-4 py-2 cursor-pointer"
+              onClick={() => dateRef.current?.showPicker()}
+            >
               <Calendar className="size-5 shrink-0 text-amber-300" aria-hidden="true" />
               <span className="sr-only">When</span>
               <input
+                ref={dateRef}
                 type="date"
                 value={when}
                 onChange={(e) => {
