@@ -72,23 +72,88 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section
-        className="relative pt-40 pb-28 overflow-hidden"
+        className="relative pt-40 pb-32 overflow-hidden"
         style={{
           background:
-            "linear-gradient(180deg,#06091a 0%,#1b1a5e 30%,#7c3f96 60%,#c45f38 80%,#0d2137 100%)",
+            "linear-gradient(160deg,#06091a 0%,#0f0c35 25%,#1b1a5e 55%,#4a2070 75%,#0d2137 100%)",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-white/60">Our story</p>
-          <h1 className="font-serif text-5xl font-semibold text-white sm:text-6xl lg:text-7xl">
-            Travel is not a product.<br />It&apos;s a feeling.
-          </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-lg leading-relaxed text-white/75">
-            Wanderlight was born in 2009 from a single frustration: the world&apos;s most extraordinary
-            experiences were buried under generic package deals. We set out to change that.
-          </p>
+        {/* Decorative rings */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            className="absolute rounded-full border border-white/[0.05]"
+            style={{ width: 900, height: 900 }}
+          />
+          <div
+            className="absolute rounded-full border border-white/[0.07]"
+            style={{ width: 640, height: 640 }}
+          />
+          <div
+            className="absolute rounded-full border border-white/[0.10]"
+            style={{ width: 400, height: 400 }}
+          />
+          {/* Glow orb */}
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: 480,
+              height: 480,
+              background:
+                "radial-gradient(circle, rgba(124,63,150,0.28) 0%, rgba(196,95,56,0.12) 50%, transparent 72%)",
+            }}
+          />
         </div>
+
+        {/* Dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        {/* Fade to page */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+
+        {/* Content */}
+        <div className="relative mx-auto max-w-4xl px-6 text-center">
+          {/* Thin rule + eyebrow */}
+          <div className="mb-6 flex items-center justify-center gap-4">
+            <span className="h-px w-12 bg-white/25" />
+            <p className="text-xs font-medium uppercase tracking-[0.35em] text-white/55">Our story</p>
+            <span className="h-px w-12 bg-white/25" />
+          </div>
+
+          <h1 className="font-serif text-5xl font-semibold text-white sm:text-6xl lg:text-7xl leading-tight">
+            Travel is not a product.<br />
+            <span className="italic font-light text-white/80">It&apos;s a feeling.</span>
+          </h1>
+
+          <p className="mt-8 max-w-xl mx-auto text-base leading-relaxed text-white/65">
+            Wanderlight was born in 2009 from a single frustration — the world&apos;s most
+            extraordinary experiences were buried under generic package deals. We set out to
+            change that.
+          </p>
+
+          {/* Scroll cue */}
+          <div className="mt-12 flex justify-center">
+            <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 pt-1.5">
+              <div
+                className="h-2 w-0.5 rounded-full bg-white/50"
+                style={{ animation: "scrollDot 1.8s ease-in-out infinite" }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes scrollDot {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            60% { transform: translateY(10px); opacity: 0; }
+          }
+        `}</style>
       </section>
 
       {/* Stats */}
