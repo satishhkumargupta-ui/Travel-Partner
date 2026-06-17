@@ -18,7 +18,6 @@ const columns = [
       { label: "About us", href: "/about" },
       { label: "Our experts", href: "#" },
       { label: "Sustainability", href: "#" },
-      { label: "Careers", href: "#" },
     ],
   },
   {
