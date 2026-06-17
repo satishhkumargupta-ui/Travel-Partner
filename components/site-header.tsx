@@ -34,7 +34,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
-    if (href.startsWith("#")) return activeHash === href
+    if (href.startsWith("#")) return pathname === "/" && activeHash === href
     return pathname === href
   }
 
