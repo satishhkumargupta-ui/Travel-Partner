@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { Compass, ShieldCheck, HeartHandshake } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -20,7 +22,9 @@ const features = [
   },
 ]
 
-export function FeatureSection() {
+type Props = { onBookingOpen: () => void }
+
+export function FeatureSection({ onBookingOpen }: Props) {
   return (
     <section id="journeys" className="bg-secondary">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:px-8">
@@ -61,7 +65,7 @@ export function FeatureSection() {
             ))}
           </ul>
 
-          <Button size="lg" className="mt-10 rounded-full">
+          <Button size="lg" onClick={onBookingOpen} className="mt-10 rounded-full">
             Start planning your journey
           </Button>
         </div>

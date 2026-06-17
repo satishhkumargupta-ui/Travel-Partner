@@ -32,7 +32,7 @@ export default function Page() {
         searchQuery={searchQuery}
         onSelectDestination={setSelectedDestination}
       />
-      <FeatureSection />
+      <FeatureSection onBookingOpen={() => setBookingOpen(true)} />
       <Testimonials />
       <Newsletter />
       <SiteFooter />
