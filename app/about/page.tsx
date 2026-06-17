@@ -187,7 +187,7 @@ export default function AboutPage() {
         </p>
         <button
           onClick={() => setBookingOpen(true)}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground hover:bg-white/90 transition-colors"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-900 hover:bg-white/90 transition-colors"
         >
           Start planning your trip
         </button>
@@ -274,7 +274,7 @@ export default function AboutPage() {
           </p>
           <button
             onClick={() => setBookingOpen(true)}
-            className="mt-2 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground hover:bg-white/90 transition-colors"
+            className="mt-2 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-900 hover:bg-white/90 transition-colors"
           >
             Plan my trip <ArrowRight className="size-4" />
           </button>
