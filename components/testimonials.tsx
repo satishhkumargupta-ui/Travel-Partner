@@ -40,7 +40,7 @@ export function Testimonials() {
             className="flex flex-col justify-between rounded-3xl border border-border bg-card p-8"
           >
             <div>
-              <div className="flex gap-1 text-yellow-400">
+              <div className="flex gap-1 text-accent">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-4 fill-current" aria-hidden="true" />
                 ))}

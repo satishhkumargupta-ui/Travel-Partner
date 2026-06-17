@@ -1,45 +1,29 @@
-"use client"
-
-import { WanderlightLogo } from "@/components/logo"
+import { Globe } from "lucide-react"
 
 const columns = [
   {
     title: "Explore",
-    links: [
-      { label: "Destinations", href: "#destinations" },
-      { label: "Group tours", href: "#" },
-      { label: "Travel guides", href: "#" },
-    ],
+    links: ["Destinations", "Curated journeys", "Group tours", "Travel guides"],
   },
   {
     title: "Company",
-    links: [
-      { label: "About us", href: "/about" },
-      { label: "Our experts", href: "#" },
-    ],
+    links: ["About us", "Our experts", "Sustainability", "Careers"],
   },
   {
     title: "Support",
-    links: [
-      { label: "Contact", href: "#", isContact: true },
-      { label: "FAQs", href: "/faqs" },
-      { label: "Terms & conditions", href: "/terms" },
-      { label: "Booking terms", href: "/booking-terms" },
-      { label: "Privacy", href: "/privacy" },
-    ],
+    links: ["Contact", "FAQs", "Booking terms", "Privacy"],
   },
 ]
 
-type Props = { onContactOpen: () => void }
-
-export function SiteFooter({ onContactOpen }: Props) {
+export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-secondary">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
           <div className="col-span-2">
-            <a href="/" className="flex items-center text-foreground">
-              <WanderlightLogo className="h-16 w-auto text-primary" />
+            <a href="#" className="flex items-center gap-2 text-foreground">
+              <Globe className="size-6 text-primary" aria-hidden="true" />
+              <span className="font-serif text-xl font-semibold">Wanderlight</span>
             </a>
             <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
               Curated journeys to the world&apos;s most extraordinary places, designed around the way
@@ -52,22 +36,13 @@ export function SiteFooter({ onContactOpen }: Props) {
               <h3 className="text-sm font-semibold text-foreground">{col.title}</h3>
               <ul className="mt-4 flex flex-col gap-3">
                 {col.links.map((link) => (
-                  <li key={link.label}>
-                    {"isContact" in link && link.isContact ? (
-                      <button
-                        onClick={onContactOpen}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                      </button>
-                    ) : (
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                      </a>
-                    )}
+                  <li key={link}>
+                    <a
+                      href="#"
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -80,7 +55,15 @@ export function SiteFooter({ onContactOpen }: Props) {
             &copy; {new Date().getFullYear()} Wanderlight. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground">Instagram</a>
+            <a href="#" className="hover:text-foreground">
+              Instagram
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Twitter
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Pinterest
+            </a>
           </div>
         </div>
       </div>
