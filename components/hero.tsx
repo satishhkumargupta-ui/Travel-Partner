@@ -75,8 +75,14 @@ export function Hero({ onSearch }: Props) {
               <input
                 type="date"
                 value={when}
-                onChange={(e) => setWhen(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value
+                  const year = val.split("-")[0]
+                  if (year && year.length > 4) return
+                  setWhen(val)
+                }}
                 min={new Date().toISOString().split("T")[0]}
+                max="9999-12-31"
                 className="w-full bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none [color-scheme:dark]"
               />
             </label>
