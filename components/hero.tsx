@@ -79,6 +79,8 @@ export function Hero({ onSearch }: Props) {
                   const val = e.target.value
                   const year = val.split("-")[0]
                   if (year && year.length > 4) return
+                  const today = new Date().toISOString().split("T")[0]
+                  if (val && val < today) return
                   setWhen(val)
                 }}
                 min={new Date().toISOString().split("T")[0]}
