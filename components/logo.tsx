@@ -102,7 +102,8 @@ export function WanderlightLogo({ className }: Props) {
         fontSize="38"
         letterSpacing="0.5"
       >
-        <tspan fontWeight="700" fill="#1b1a5e">Wander</tspan>
+        {/* currentColor → white on dark hero header, foreground on scroll */}
+        <tspan fontWeight="700" fill="currentColor">Wander</tspan>
         <tspan fontWeight="300" fill="#e8902a">light</tspan>
       </text>
 
@@ -114,8 +115,8 @@ export function WanderlightLogo({ className }: Props) {
         fontSize="13"
         fontWeight="400"
         letterSpacing="3.5"
-        fill="#7c3f96"
-        fillOpacity="0.72"
+        fill="currentColor"
+        fillOpacity="0.55"
       >travel agency</text>
     </svg>
   )
