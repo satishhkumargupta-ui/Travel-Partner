@@ -14,7 +14,7 @@ const DESTINATIONS = [
   "Bali, Indonesia",
   "Somewhere new — surprise me!",
 ]
-const BUDGETS = ["Under $2,000", "$2,000 – $3,000", "$3,000 – $5,000", "$5,000+"]
+const BUDGETS = ["Under ₹1,50,000", "₹1,50,000 – ₹2,50,000", "₹2,50,000 – ₹4,00,000", "₹4,00,000+"]
 const STYLES = [
   "Relaxation & beaches",
   "Culture & history",
