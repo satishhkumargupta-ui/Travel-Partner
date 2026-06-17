@@ -39,7 +39,7 @@ export function SiteFooter({ onContactOpen }: Props) {
         <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
           <div className="col-span-2">
             <a href="/" className="flex items-center text-foreground">
-              <WanderlightLogo className="h-9 w-9 text-primary" />
+              <WanderlightLogo className="h-10 w-auto text-primary" />
             </a>
             <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
               Curated journeys to the world&apos;s most extraordinary places, designed around the way
