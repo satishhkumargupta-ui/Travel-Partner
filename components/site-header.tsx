@@ -37,9 +37,8 @@ export function SiteHeader({ onBookingOpen }: Props) {
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-8">
 
         {/* Logo */}
-        <a href="/" className={`flex items-center gap-2.5 transition-colors duration-300 ${logoCls}`}>
-          <WanderlightLogo className="h-8 w-auto" />
-          <span className="font-serif text-xl font-semibold tracking-tight">Wanderlight</span>
+        <a href="/" className={`flex items-center transition-colors duration-300 ${logoCls}`}>
+          <WanderlightLogo className="h-9 w-auto" />
         </a>
 
         {/* Desktop nav */}
