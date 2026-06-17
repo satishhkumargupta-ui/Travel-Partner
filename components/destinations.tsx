@@ -127,7 +127,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Shimla",
     country: "India",
-    image: "/images/feature-trip.png",
+    image: "/images/dest-shimla.jpg",
     price: "₹35,000",
     rating: "4.7",
     tag: "Hill station",
@@ -190,7 +190,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Jaipur",
     country: "India",
-    image: "/images/dest-marrakech.png",
+    image: "/images/dest-jaipur.jpg",
     price: "₹38,000",
     rating: "4.8",
     tag: "Royal heritage",
@@ -211,7 +211,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Kerala",
     country: "India",
-    image: "/images/dest-bali.png",
+    image: "/images/dest-kerala.jpg",
     price: "₹55,000",
     rating: "4.9",
     tag: "Backwater bliss",
@@ -232,7 +232,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Manali",
     country: "India",
-    image: "/images/feature-trip.jpg",
+    image: "/images/dest-manali.jpg",
     price: "₹32,000",
     rating: "4.7",
     tag: "Alpine adventure",
