@@ -90,8 +90,8 @@ export function SiteHeader({ onBookingOpen }: Props) {
                   active
                     ? "font-semibold text-amber-400"
                     : scrolled
-                      ? "font-medium text-foreground/70 hover:text-foreground"
-                      : "font-medium text-white/80 hover:text-white"
+                      ? "font-medium text-foreground/70 hover:text-amber-400"
+                      : "font-medium text-white/80 hover:text-amber-400"
                 }`}
               >
                 {link.label}
