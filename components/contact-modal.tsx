@@ -155,16 +155,17 @@ export function ContactModal({ onClose }: Props) {
             ))}
           </div>
 
-          <Button
-            asChild
-            size="lg"
-            className="w-full rounded-full"
+          <a
+            href="tel:+918889899041"
+            className="flex w-full items-center justify-center gap-2.5 rounded-full py-3.5 text-sm font-semibold text-white shadow-lg transition-opacity hover:opacity-90 active:scale-[0.98]"
+            style={{
+              background:
+                "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 40%,#c45f38 70%,#e8902a 100%)",
+            }}
           >
-            <a href="tel:+918889899041">
-              <Phone className="size-4" />
-              Call now
-            </a>
-          </Button>
+            <Phone className="size-4" />
+            Call now
+          </a>
         </div>
       </div>
     </div>
