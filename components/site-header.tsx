@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { WanderlightLogo } from "@/components/logo"
 
@@ -14,8 +15,9 @@ const navLinks = [
 type Props = { onBookingOpen: () => void }
 
 export function SiteHeader({ onBookingOpen }: Props) {
-  const [open, setOpen]       = useState(false)
+  const [open, setOpen]         = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname                = usePathname()
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60)
@@ -23,8 +25,12 @@ export function SiteHeader({ onBookingOpen }: Props) {
     return () => window.removeEventListener("scroll", handler)
   }, [])
 
-  const textCls = scrolled ? "text-foreground/80 hover:text-foreground" : "text-white/80 hover:text-white"
   const logoCls = scrolled ? "text-foreground" : "text-white"
+
+  function isActive(href: string) {
+    if (href.startsWith("#")) return pathname === "/"
+    return pathname === href
+  }
 
   return (
     <header
@@ -43,17 +49,32 @@ export function SiteHeader({ onBookingOpen }: Props) {
 
         {/* Desktop nav */}
         <div className="hidden items-center md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={`group relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${textCls}`}
-            >
-              {link.label}
-              {/* Animated underline */}
-              <span className="absolute bottom-1 left-4 right-4 h-px origin-left scale-x-0 rounded-full bg-current opacity-70 transition-transform duration-200 group-hover:scale-x-100" />
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const active = isActive(link.href)
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                className={`group relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
+                  active
+                    ? "text-amber-400 font-semibold"
+                    : scrolled
+                      ? "text-foreground/70 hover:text-foreground"
+                      : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+                {/* Underline: always visible for active, animates in on hover for others */}
+                <span
+                  className={`absolute bottom-1 left-4 right-4 h-0.5 rounded-full transition-transform duration-200 ${
+                    active
+                      ? "scale-x-100 bg-amber-400"
+                      : "origin-left scale-x-0 bg-current opacity-60 group-hover:scale-x-100"
+                  }`}
+                />
+              </a>
+            )
+          })}
         </div>
 
         {/* CTA */}
@@ -86,16 +107,23 @@ export function SiteHeader({ onBookingOpen }: Props) {
       {open && (
         <div className="mx-4 mb-3 rounded-2xl border border-border bg-card/95 p-5 shadow-2xl backdrop-blur-lg md:hidden">
           <div className="flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const active = isActive(link.href)
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-amber-50 text-amber-600 font-semibold"
+                      : "text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
             <button
               onClick={() => { setOpen(false); onBookingOpen() }}
               className="mt-3 w-full rounded-full py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90"
