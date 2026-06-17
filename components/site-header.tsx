@@ -34,11 +34,12 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
-    return activeHash === href
+    if (href.startsWith("#")) return activeHash === href
+    return pathname === href
   }
 
   function handleClick(href: string) {
-    setActiveHash(href)
+    if (href.startsWith("#")) setActiveHash(href)
   }
 
   return (
