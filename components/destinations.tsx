@@ -51,6 +51,30 @@ const destinations: Destination[] = [
     rating: "4.9",
     tag: "Tropical retreat",
   },
+  {
+    name: "Shimla",
+    country: "India",
+    image: "/images/dest-shimla.png",
+    price: "$1,250",
+    rating: "4.8",
+    tag: "Himalayan hill station",
+  },
+  {
+    name: "Nainital",
+    country: "India",
+    image: "/images/dest-nainital.png",
+    price: "$1,150",
+    rating: "4.7",
+    tag: "Lakeside getaway",
+  },
+  {
+    name: "Mussoorie",
+    country: "India",
+    image: "/images/dest-mussoorie.png",
+    price: "$1,180",
+    rating: "4.8",
+    tag: "Mountain views",
+  },
 ]
 
 export function Destinations() {
