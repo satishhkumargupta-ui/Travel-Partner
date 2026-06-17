@@ -127,7 +127,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Shimla",
     country: "India",
-    image: "/images/feature-trip.jpg",
+    image: "/images/feature-trip.png",
     price: "₹35,000",
     rating: "4.7",
     tag: "Hill station",
@@ -148,7 +148,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Nainital",
     country: "India",
-    image: "/images/feature-trip.jpg",
+    image: "/images/dest-alps.png",
     price: "₹28,000",
     rating: "4.6",
     tag: "Lake town",
