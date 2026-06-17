@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { MapPin, Calendar, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -20,90 +21,58 @@ export function Hero({ onSearch }: Props) {
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
 
-      {/* ── Sky gradient ── */}
+      {/* ── Background photo ── */}
+      <Image
+        src="/images/dest-alps.png"
+        alt="Snow-capped mountain adventure"
+        fill
+        priority
+        className="object-cover object-center scale-105"
+        sizes="100vw"
+      />
+
+      {/* ── Adventure colour grade ── */}
+      {/* Base darkening */}
+      <div className="absolute inset-0 bg-black/45" />
+
+      {/* Cool teal-blue wash — crisp mountain atmosphere */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg,#06091a 0%,#0d1238 10%,#1b1a5e 22%,#3b2d82 32%,#7c3f96 40%,#c45f38 50%,#e8902a 57%,#c47820 61%,#0e3352 72%,#061a30 88%,#020b18 100%)",
+            "radial-gradient(ellipse 90% 60% at 60% 20%, rgba(0,80,140,0.40) 0%, transparent 70%)",
         }}
       />
 
-      {/* ── Sun glow ── */}
+      {/* Deep navy shadow bottom for text area */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 22% at 52% 57%,rgba(255,195,80,0.85) 0%,rgba(230,120,40,0.55) 28%,rgba(180,70,20,0.2) 55%,transparent 72%)",
+            "linear-gradient(180deg, transparent 30%, rgba(2,8,28,0.70) 75%, rgba(2,8,28,0.92) 100%)",
         }}
       />
 
-      {/* ── Wide atmospheric bloom ── */}
+      {/* Crisp icy highlight top-right (sky) */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 130% 18% at 50% 59%,rgba(255,155,40,0.28) 0%,transparent 65%)",
+            "radial-gradient(ellipse 55% 40% at 85% 8%, rgba(180,220,255,0.18) 0%, transparent 65%)",
         }}
       />
 
-      {/* ── Ocean reflection beneath horizon ── */}
+      {/* Left contrast for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
+
+      {/* Vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg,transparent 54%,rgba(14,55,90,0.55) 68%,rgba(4,18,38,0.85) 100%)",
+            "radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(0,0,0,0.60) 100%)",
         }}
       />
-
-      {/* ── Stars (tiny radial dots in sky area) ── */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: [
-            "radial-gradient(1.2px 1.2px at  8% 10%,rgba(255,255,255,.65) 0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 18%  6%,rgba(255,255,255,.5)  0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 30% 14%,rgba(255,255,255,.4)  0%,transparent 100%)",
-            "radial-gradient(1.5px 1.5px at 42%  4%,rgba(255,255,255,.6)  0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 55%  9%,rgba(255,255,255,.45) 0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 63% 18%,rgba(255,255,255,.35) 0%,transparent 100%)",
-            "radial-gradient(1.2px 1.2px at 74%  7%,rgba(255,255,255,.55) 0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 82% 20%,rgba(255,255,255,.4)  0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 90% 12%,rgba(255,255,255,.5)  0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 48% 24%,rgba(255,255,255,.3)  0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 22% 28%,rgba(255,255,255,.25) 0%,transparent 100%)",
-            "radial-gradient(1px   1px   at 70% 30%,rgba(255,255,255,.2)  0%,transparent 100%)",
-          ].join(","),
-        }}
-      />
-
-      {/* ── SVG mountain silhouettes ── */}
-      <svg
-        className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 360"
-        preserveAspectRatio="none"
-        style={{ height: "45%" }}
-        aria-hidden="true"
-      >
-        {/* Distant range */}
-        <path
-          d="M0,360 L0,240 L90,195 L180,215 L270,165 L360,185 L450,140 L540,168 L630,125 L720,152 L810,108 L900,138 L990,95 L1080,122 L1170,88 L1260,112 L1350,96 L1440,118 L1440,360 Z"
-          fill="rgba(12,28,60,0.55)"
-        />
-        {/* Mid range */}
-        <path
-          d="M0,360 L0,290 L110,248 L220,272 L340,218 L460,252 L560,200 L660,238 L760,188 L860,222 L960,175 L1060,208 L1160,170 L1270,200 L1370,182 L1440,195 L1440,360 Z"
-          fill="rgba(8,20,48,0.75)"
-        />
-        {/* Foreground land */}
-        <path
-          d="M0,360 L0,320 L120,288 L240,308 L380,272 L500,300 L620,262 L740,292 L860,255 L980,285 L1100,248 L1220,275 L1340,258 L1440,270 L1440,360 Z"
-          fill="rgba(4,12,30,0.92)"
-        />
-      </svg>
-
-      {/* ── Left-side text-contrast overlay ── */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
       {/* ── Content ── */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-16 lg:px-8">
