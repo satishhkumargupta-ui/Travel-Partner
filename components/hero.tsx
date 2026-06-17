@@ -92,7 +92,7 @@ export function Hero({ onSearch }: Props) {
                 }}
                 min={new Date().toISOString().split("T")[0]}
                 max="9999-12-31"
-                className="w-full bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none [color-scheme:dark]"
+                className="w-full bg-transparent text-sm text-white placeholder:text-white/50 focus:outline-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:hidden"
               />
             </label>
             <Button
