@@ -241,7 +241,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
+      <section id="team" className="mx-auto max-w-5xl px-6 py-20 lg:px-8">
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.25em] text-primary text-center">The people</p>
         <h2 className="font-serif text-4xl font-semibold text-foreground text-center sm:text-5xl mb-14">
           Meet the team
