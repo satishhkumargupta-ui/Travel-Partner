@@ -3,7 +3,7 @@ type Props = { className?: string }
 export function WanderlightLogo({ className }: Props) {
   return (
     <svg
-      viewBox="0 0 216 68"
+      viewBox="0 0 260 295"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
@@ -11,95 +11,112 @@ export function WanderlightLogo({ className }: Props) {
     >
       <defs>
         <linearGradient id="wlG" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%"   stopColor="#1b1a5e" />
-          <stop offset="48%"  stopColor="#7c3f96" />
-          <stop offset="100%" stopColor="#e8902a" />
+          <stop offset="0%"   stopColor="#1b1a5e"/>
+          <stop offset="48%"  stopColor="#7c3f96"/>
+          <stop offset="100%" stopColor="#e8902a"/>
         </linearGradient>
-        <clipPath id="wlHead">
-          <circle cx="32" cy="26" r="20" />
-        </clipPath>
-        <filter id="wlDrop" x="-20%" y="-20%" width="140%" height="160%">
-          <feDropShadow dx="0" dy="3" stdDeviation="3"
-            floodColor="#7c3f96" floodOpacity="0.30" />
-        </filter>
       </defs>
 
-      {/* ── Icon: location pin + globe grid + airplane ── */}
+      {/* ════ ORBIT RING — drawn first so pin sits on top ════ */}
+      <ellipse
+        cx="130" cy="222" rx="60" ry="16"
+        stroke="url(#wlG)" strokeWidth="8" fill="none"
+      />
+
+      {/* ════ DASHED FLIGHT ARC — behind pin, sweeps counterclockwise ════ */}
+      {/*
+        Starts near airplane (inside pin's upper-right),
+        swoops outward → right → bottom → left → ends upper-left.
+        Drawn BEFORE pin so pin covers the interior portion.
+      */}
       <path
-        d="M32,6
-           C21,6 12,15 12,26
-           C12,36.5 18.5,45 26.5,52
-           L32,62
-           L37.5,52
-           C45.5,45 52,36.5 52,26
-           C52,15 43,6 32,6 Z"
+        d="M186,82
+           C222,44 258,124 224,178
+           C200,216 152,238 106,226
+           C64,214 46,170 60,130
+           C70,100 96,80 114,76"
+        stroke="#1b1a5e"
+        strokeWidth="4.5"
+        strokeDasharray="9 7"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.80"
+      />
+
+      {/* ════ PIN BODY (gradient, covers interior of arc) ════ */}
+      <path
+        d="M130,38
+           C94,38 68,65 68,108
+           C68,135 80,156 98,172
+           L130,222
+           L162,172
+           C180,156 192,135 192,108
+           C192,65 166,38 130,38 Z"
         fill="url(#wlG)"
-        filter="url(#wlDrop)"
       />
-      <g clipPath="url(#wlHead)">
-        <line x1="12" y1="26" x2="52" y2="26"
-          stroke="white" strokeWidth="0.7" strokeOpacity="0.30"/>
-        <path d="M32,6 Q20,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"/>
-        <path d="M32,6 Q44,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"/>
-        <path d="M17,17 Q32,12 47,17"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"/>
-        <path d="M14,35 Q32,41 50,35"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"/>
-      </g>
-      <g clipPath="url(#wlHead)">
-        <path
-          d="M32,13
-             C33,13 34,13.8 34,15.2
-             L34,21.5
-             L43,25 L43,27.5
-             L34,24
-             L34,30
-             L37,31.5 L37,33
-             L32,31.5
-             L27,33  L27,31.5
-             L30,30
-             L30,24
-             L21,27.5 L21,25
-             L30,21.5
-             L30,15.2
-             C30,13.8 31,13 32,13 Z"
-          fill="white"
-          fillOpacity="0.96"
-        />
-      </g>
 
-      {/* ── Separator ── */}
+      {/* ════ CLOUD — left, inside pin ════ */}
+      <path
+        d="M94,88
+           C94,83 97,80 102,81
+           C103,77 109,75 113,78
+           C116,75 122,77 122,81
+           C125,82 125,88 122,89
+           L94,89 Z"
+        fill="white" opacity="0.88"
+      />
+
+      {/* ════ CLOUD — right, inside pin ════ */}
+      <path
+        d="M140,68
+           C140,64 143,61 147,62
+           C148,58 154,56 158,59
+           C161,56 167,58 167,62
+           C170,63 170,68 167,69
+           L140,69 Z"
+        fill="white" opacity="0.88"
+      />
+
+      {/* ════ PAPER AIRPLANE — upper-right of pin, pointing NE ════ */}
+      {/* Main triangular body */}
+      <path
+        d="M190,76 L158,98 L172,88 Z"
+        fill="white" fillOpacity="0.97"
+      />
+      {/* Lower wing fold (gives 3-D paper depth) */}
+      <path
+        d="M172,88 L158,98 L163,108 Z"
+        fill="white" fillOpacity="0.60"
+      />
+      {/* Centre fold crease */}
       <line
-        x1="68" y1="18" x2="68" y2="50"
-        stroke="#7c3f96" strokeWidth="0.8" strokeOpacity="0.22"
+        x1="190" y1="76" x2="168" y2="100"
+        stroke="#1b1a5e" strokeWidth="1.2" strokeOpacity="0.18"
       />
 
-      {/* ── Wordmark ── */}
-      {/* "Wander" inherits currentColor → adapts to header (white) / footer (foreground) */}
+      {/* ════ WORDMARK ════ */}
       <text
-        x="77"
-        y="41"
-        fontFamily="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif"
-        fontSize="27"
-        letterSpacing="0.4"
+        x="130" y="258"
+        textAnchor="middle"
+        fontFamily="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
+        fontSize="38"
+        letterSpacing="0.5"
       >
-        <tspan fontWeight="700" fill="currentColor">Wander</tspan>
+        <tspan fontWeight="700" fill="#1b1a5e">Wander</tspan>
         <tspan fontWeight="300" fill="#e8902a">light</tspan>
       </text>
 
-      {/* ── Tagline ── */}
+      {/* ════ TAGLINE ════ */}
       <text
-        x="79"
-        y="53"
+        x="130" y="278"
+        textAnchor="middle"
         fontFamily="'Segoe UI', -apple-system, Helvetica, Arial, sans-serif"
-        fontSize="6.5"
-        fontWeight="500"
-        letterSpacing="2.6"
+        fontSize="13"
+        fontWeight="400"
+        letterSpacing="3.5"
         fill="#7c3f96"
-        fillOpacity="0.65"
-      >CURATED TRAVEL</text>
+        fillOpacity="0.72"
+      >travel agency</text>
     </svg>
   )
 }
