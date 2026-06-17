@@ -27,52 +27,18 @@ export function Hero({ onSearch }: Props) {
         alt="Snow-capped mountain adventure"
         fill
         priority
-        className="object-cover object-center scale-105"
+        className="object-cover object-[center_30%]"
         sizes="100vw"
       />
 
-      {/* ── Adventure colour grade ── */}
-      {/* Base darkening */}
-      <div className="absolute inset-0 bg-black/45" />
+      {/* Light tint so photo stays visible */}
+      <div className="absolute inset-0 bg-black/30" />
 
-      {/* Cool teal-blue wash — crisp mountain atmosphere */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 60% at 60% 20%, rgba(0,80,140,0.40) 0%, transparent 70%)",
-        }}
-      />
+      {/* Bottom-to-top gradient — text legibility only */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-      {/* Deep navy shadow bottom for text area */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 30%, rgba(2,8,28,0.70) 75%, rgba(2,8,28,0.92) 100%)",
-        }}
-      />
-
-      {/* Crisp icy highlight top-right (sky) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 40% at 85% 8%, rgba(180,220,255,0.18) 0%, transparent 65%)",
-        }}
-      />
-
-      {/* Left contrast for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
-
-      {/* Vignette */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 85% 85% at 50% 50%, transparent 40%, rgba(0,0,0,0.60) 100%)",
-        }}
-      />
+      {/* Subtle left-side text shadow */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
 
       {/* ── Content ── */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-28 pb-16 lg:px-8">
