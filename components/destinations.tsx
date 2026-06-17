@@ -169,7 +169,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Goa",
     country: "India",
-    image: "/images/dest-bali.png",
+    image: "/images/hero-coast.png",
     price: "₹42,000",
     rating: "4.8",
     tag: "Beach & nightlife",
