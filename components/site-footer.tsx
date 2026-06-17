@@ -15,7 +15,7 @@ const columns = [
   {
     title: "Company",
     links: [
-      { label: "About us", href: "#about" },
+      { label: "About us", href: "/about" },
       { label: "Our experts", href: "#" },
       { label: "Sustainability", href: "#" },
       { label: "Careers", href: "#" },
@@ -26,8 +26,8 @@ const columns = [
     links: [
       { label: "Contact", href: "#", isContact: true },
       { label: "FAQs", href: "/faqs" },
-      { label: "Booking terms", href: "#" },
-      { label: "Privacy", href: "#" },
+      { label: "Booking terms", href: "/booking-terms" },
+      { label: "Privacy", href: "/privacy" },
     ],
   },
 ]
