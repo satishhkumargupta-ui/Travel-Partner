@@ -148,7 +148,7 @@ export const allDestinations: Destination[] = [
   {
     name: "Nainital",
     country: "India",
-    image: "/images/dest-alps.png",
+    image: "/images/dest-nainital.jpg",
     price: "₹28,000",
     rating: "4.6",
     tag: "Lake town",
