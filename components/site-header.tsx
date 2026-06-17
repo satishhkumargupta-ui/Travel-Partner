@@ -15,9 +15,10 @@ const navLinks = [
 type Props = { onBookingOpen: () => void }
 
 export function SiteHeader({ onBookingOpen }: Props) {
-  const [open, setOpen]         = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const pathname                = usePathname()
+  const [open, setOpen]           = useState(false)
+  const [scrolled, setScrolled]   = useState(false)
+  const [activeHash, setActiveHash] = useState("")
+  const pathname                  = usePathname()
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60)
@@ -25,11 +26,20 @@ export function SiteHeader({ onBookingOpen }: Props) {
     return () => window.removeEventListener("scroll", handler)
   }, [])
 
+  // Clear hash selection when leaving the home page
+  useEffect(() => {
+    if (pathname !== "/") setActiveHash("")
+  }, [pathname])
+
   const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
-    if (href.startsWith("#")) return pathname === "/"
+    if (href.startsWith("#")) return activeHash === href
     return pathname === href
+  }
+
+  function handleClick(href: string) {
+    if (href.startsWith("#")) setActiveHash(href)
   }
 
   return (
@@ -55,6 +65,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={() => handleClick(link.href)}
                 className={`group relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   active
                     ? "text-amber-400 font-semibold"
@@ -113,7 +124,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={() => setOpen(false)}
+                  onClick={() => { setOpen(false); handleClick(link.href) }}
                   className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
                     active
                       ? "bg-amber-50 text-amber-600 font-semibold"
