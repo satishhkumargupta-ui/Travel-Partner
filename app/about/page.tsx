@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Heart, Globe, Compass, ShieldCheck, HeartHandshake, ArrowRight } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -71,77 +72,63 @@ export default function AboutPage() {
       <SiteHeader onBookingOpen={() => setBookingOpen(true)} />
 
       {/* Hero */}
-      <section
-        className="relative pt-40 pb-32 overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(160deg,#06091a 0%,#0f0c35 25%,#1b1a5e 55%,#4a2070 75%,#0d2137 100%)",
-        }}
-      >
-        {/* Decorative rings */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div
-            className="absolute rounded-full border border-white/[0.05]"
-            style={{ width: 900, height: 900 }}
-          />
-          <div
-            className="absolute rounded-full border border-white/[0.07]"
-            style={{ width: 640, height: 640 }}
-          />
-          <div
-            className="absolute rounded-full border border-white/[0.10]"
-            style={{ width: 400, height: 400 }}
-          />
-          {/* Glow orb */}
-          <div
-            className="absolute rounded-full"
-            style={{
-              width: 480,
-              height: 480,
-              background:
-                "radial-gradient(circle, rgba(124,63,150,0.28) 0%, rgba(196,95,56,0.12) 50%, transparent 72%)",
-            }}
-          />
-        </div>
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
+        {/* Background photo */}
+        <Image
+          src="/images/hero-coast.png"
+          alt="Scenic coastline"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
 
-        {/* Dot grid */}
+        {/* Layered overlays for depth + text legibility */}
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-black/30" />
         <div
-          className="pointer-events-none absolute inset-0 opacity-20"
+          className="absolute inset-0"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(27,26,94,0.45) 0%, transparent 70%)",
           }}
         />
 
-        {/* Fade to page */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        {/* Dot grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
+          }}
+        />
 
         {/* Content */}
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
+        <div className="relative mx-auto max-w-4xl px-6 text-center pt-24">
           {/* Thin rule + eyebrow */}
           <div className="mb-6 flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-white/25" />
-            <p className="text-xs font-medium uppercase tracking-[0.35em] text-white/55">Our story</p>
-            <span className="h-px w-12 bg-white/25" />
+            <span className="h-px w-10 bg-white/30" />
+            <p className="text-xs font-medium uppercase tracking-[0.35em] text-white/60">Our story</p>
+            <span className="h-px w-10 bg-white/30" />
           </div>
 
-          <h1 className="font-serif text-5xl font-semibold text-white sm:text-6xl lg:text-7xl leading-tight">
+          <h1 className="font-serif text-5xl font-semibold text-white sm:text-6xl lg:text-7xl leading-tight drop-shadow-lg">
             Travel is not a product.<br />
             <span className="italic font-light text-white/80">It&apos;s a feeling.</span>
           </h1>
 
-          <p className="mt-8 max-w-xl mx-auto text-base leading-relaxed text-white/65">
+          <p className="mt-8 max-w-xl mx-auto text-base leading-relaxed text-white/70 drop-shadow">
             Wanderlight was born in 2009 from a single frustration — the world&apos;s most
             extraordinary experiences were buried under generic package deals. We set out to
             change that.
           </p>
 
           {/* Scroll cue */}
-          <div className="mt-12 flex justify-center">
-            <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 pt-1.5">
+          <div className="mt-14 flex justify-center">
+            <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/25 pt-1.5">
               <div
-                className="h-2 w-0.5 rounded-full bg-white/50"
+                className="h-2 w-0.5 rounded-full bg-white/60"
                 style={{ animation: "scrollDot 1.8s ease-in-out infinite" }}
               />
             </div>
