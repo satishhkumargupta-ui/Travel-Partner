@@ -38,7 +38,7 @@ export function SiteFooter({ onContactOpen }: Props) {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
           <div className="col-span-2">
-            <a href="#" className="flex items-center gap-2 text-foreground">
+            <a href="/" className="flex items-center gap-2 text-foreground">
               <Globe className="size-6 text-primary" aria-hidden="true" />
               <span className="font-serif text-xl font-semibold">Wanderlight</span>
             </a>

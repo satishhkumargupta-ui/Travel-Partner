@@ -21,7 +21,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5 lg:px-8">
-        <a href="#" className="flex items-center gap-2 text-background">
+        <a href="/" className="flex items-center gap-2 text-background">
           <Globe className="size-6" aria-hidden="true" />
           <span className="font-serif text-xl font-semibold tracking-tight">Wanderlight</span>
         </a>
