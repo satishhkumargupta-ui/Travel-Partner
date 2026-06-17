@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Heart, Globe, Users, Star, Compass, ShieldCheck, HeartHandshake, ArrowRight } from "lucide-react"
+import { Heart, Globe, Compass, ShieldCheck, HeartHandshake, ArrowRight } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { BookingModal } from "@/components/booking-modal"
@@ -103,6 +103,25 @@ export default function AboutPage() {
             ))}
           </dl>
         </div>
+      </section>
+
+      {/* Banner */}
+      <section
+        className="w-full py-12 px-6 text-center text-white"
+        style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 40%,#c45f38 70%,#e8902a 100%)" }}
+      >
+        <p className="mx-auto max-w-3xl font-serif text-3xl font-semibold leading-snug sm:text-4xl">
+          Over 15 years of crafting journeys that people never stop talking about.
+        </p>
+        <p className="mt-4 text-white/75 text-sm max-w-xl mx-auto">
+          Every itinerary is built from scratch — no templates, no shortcuts, no compromises.
+        </p>
+        <button
+          onClick={() => setBookingOpen(true)}
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground hover:bg-white/90 transition-colors"
+        >
+          Start planning your trip
+        </button>
       </section>
 
       {/* Mission */}
