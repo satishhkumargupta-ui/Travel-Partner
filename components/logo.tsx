@@ -3,33 +3,28 @@ type Props = { className?: string }
 export function WanderlightLogo({ className }: Props) {
   return (
     <svg
-      viewBox="0 0 64 68"
+      viewBox="0 0 216 68"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="Wanderlight"
     >
       <defs>
-        {/* Brand gradient — top-left → bottom-right */}
         <linearGradient id="wlG" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%"   stopColor="#1b1a5e" />
           <stop offset="48%"  stopColor="#7c3f96" />
           <stop offset="100%" stopColor="#e8902a" />
         </linearGradient>
-
-        {/* Clip inner circle only (globe head) */}
         <clipPath id="wlHead">
           <circle cx="32" cy="26" r="20" />
         </clipPath>
-
-        {/* Drop shadow */}
         <filter id="wlDrop" x="-20%" y="-20%" width="140%" height="160%">
           <feDropShadow dx="0" dy="3" stdDeviation="3"
             floodColor="#7c3f96" floodOpacity="0.30" />
         </filter>
       </defs>
 
-      {/* ── Location pin shape ── */}
+      {/* ── Icon: location pin + globe grid + airplane ── */}
       <path
         d="M32,6
            C21,6 12,15 12,26
@@ -41,41 +36,18 @@ export function WanderlightLogo({ className }: Props) {
         fill="url(#wlG)"
         filter="url(#wlDrop)"
       />
-
-      {/* ── Globe grid (white, inside pin head only) ── */}
       <g clipPath="url(#wlHead)">
-
-        {/* Equator */}
-        <line
-          x1="12" y1="26" x2="52" y2="26"
-          stroke="white" strokeWidth="0.7" strokeOpacity="0.30"
-        />
-
-        {/* Left meridian */}
-        <path
-          d="M32,6 Q20,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"
-        />
-        {/* Right meridian */}
-        <path
-          d="M32,6 Q44,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"
-        />
-
-        {/* Upper latitude */}
-        <path
-          d="M17,17 Q32,12 47,17"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"
-        />
-        {/* Lower latitude */}
-        <path
-          d="M14,35 Q32,41 50,35"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"
-        />
-
+        <line x1="12" y1="26" x2="52" y2="26"
+          stroke="white" strokeWidth="0.7" strokeOpacity="0.30"/>
+        <path d="M32,6 Q20,26 32,52"
+          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"/>
+        <path d="M32,6 Q44,26 32,52"
+          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"/>
+        <path d="M17,17 Q32,12 47,17"
+          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"/>
+        <path d="M14,35 Q32,41 50,35"
+          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"/>
       </g>
-
-      {/* ── Airplane (white, top-down, pointing upward / north) ── */}
       <g clipPath="url(#wlHead)">
         <path
           d="M32,13
@@ -98,6 +70,36 @@ export function WanderlightLogo({ className }: Props) {
         />
       </g>
 
+      {/* ── Separator ── */}
+      <line
+        x1="68" y1="18" x2="68" y2="50"
+        stroke="#7c3f96" strokeWidth="0.8" strokeOpacity="0.22"
+      />
+
+      {/* ── Wordmark ── */}
+      {/* "Wander" inherits currentColor → adapts to header (white) / footer (foreground) */}
+      <text
+        x="77"
+        y="41"
+        fontFamily="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif"
+        fontSize="27"
+        letterSpacing="0.4"
+      >
+        <tspan fontWeight="700" fill="currentColor">Wander</tspan>
+        <tspan fontWeight="300" fill="#e8902a">light</tspan>
+      </text>
+
+      {/* ── Tagline ── */}
+      <text
+        x="79"
+        y="53"
+        fontFamily="'Segoe UI', -apple-system, Helvetica, Arial, sans-serif"
+        fontSize="6.5"
+        fontWeight="500"
+        letterSpacing="2.6"
+        fill="#7c3f96"
+        fillOpacity="0.65"
+      >CURATED TRAVEL</text>
     </svg>
   )
 }
