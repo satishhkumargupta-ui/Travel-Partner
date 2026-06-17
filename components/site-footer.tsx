@@ -7,7 +7,6 @@ const columns = [
     title: "Explore",
     links: [
       { label: "Destinations", href: "#destinations" },
-      { label: "Curated journeys", href: "#journeys" },
       { label: "Group tours", href: "#" },
       { label: "Travel guides", href: "#" },
     ],
@@ -17,7 +16,6 @@ const columns = [
     links: [
       { label: "About us", href: "/about" },
       { label: "Our experts", href: "#" },
-      { label: "Sustainability", href: "#" },
     ],
   },
   {
