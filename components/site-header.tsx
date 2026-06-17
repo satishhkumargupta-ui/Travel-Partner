@@ -15,10 +15,10 @@ const navLinks = [
 type Props = { onBookingOpen: () => void }
 
 export function SiteHeader({ onBookingOpen }: Props) {
-  const [open, setOpen]           = useState(false)
-  const [scrolled, setScrolled]   = useState(false)
+  const [open, setOpen]             = useState(false)
+  const [scrolled, setScrolled]     = useState(false)
   const [activeHash, setActiveHash] = useState("")
-  const pathname                  = usePathname()
+  const pathname                    = usePathname()
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60)
@@ -26,7 +26,14 @@ export function SiteHeader({ onBookingOpen }: Props) {
     return () => window.removeEventListener("scroll", handler)
   }, [])
 
-  // Clear hash selection when leaving the home page
+  // Keep activeHash in sync with the browser URL hash at all times
+  useEffect(() => {
+    const onHashChange = () => setActiveHash(window.location.hash)
+    window.addEventListener("hashchange", onHashChange)
+    return () => window.removeEventListener("hashchange", onHashChange)
+  }, [])
+
+  // When navigating to a different page, clear any stale hash selection
   useEffect(() => {
     if (pathname !== "/") setActiveHash("")
   }, [pathname])
@@ -34,11 +41,12 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
-    if (href.startsWith("#")) return pathname === "/" && activeHash === href
+    if (href.startsWith("#")) return activeHash === href
     return pathname === href
   }
 
-  function handleClick(href: string) {
+  function handleHashClick(href: string) {
+    // Set immediately for instant visual feedback before hashchange fires
     if (href.startsWith("#")) setActiveHash(href)
   }
 
@@ -52,7 +60,6 @@ export function SiteHeader({ onBookingOpen }: Props) {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-8">
 
-        {/* Logo */}
         <a href="/" className={`flex items-center transition-colors duration-300 ${logoCls}`}>
           <WanderlightLogo className="h-20 w-auto" />
         </a>
@@ -65,7 +72,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={() => handleClick(link.href)}
+                onClick={() => handleHashClick(link.href)}
                 className={`group relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   active
                     ? "text-amber-400 font-semibold"
@@ -75,7 +82,6 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 }`}
               >
                 {link.label}
-                {/* Underline: always visible for active, animates in on hover for others */}
                 <span
                   className={`absolute bottom-1 left-4 right-4 h-0.5 rounded-full transition-transform duration-200 ${
                     active
@@ -93,10 +99,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
           <button
             onClick={onBookingOpen}
             className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:opacity-90 active:scale-95"
-            style={{
-              background:
-                "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
-            }}
+            style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)" }}
           >
             Plan a trip
           </button>
@@ -124,7 +127,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={() => { setOpen(false); handleClick(link.href) }}
+                  onClick={() => { setOpen(false); handleHashClick(link.href) }}
                   className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
                     active
                       ? "bg-amber-50 text-amber-600 font-semibold"
@@ -138,10 +141,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
             <button
               onClick={() => { setOpen(false); onBookingOpen() }}
               className="mt-3 w-full rounded-full py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90"
-              style={{
-                background:
-                  "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
-              }}
+              style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)" }}
             >
               Plan a trip
             </button>
