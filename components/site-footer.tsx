@@ -82,8 +82,6 @@ export function SiteFooter({ onContactOpen }: Props) {
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground">Instagram</a>
-            <a href="#" className="hover:text-foreground">Twitter</a>
-            <a href="#" className="hover:text-foreground">Pinterest</a>
           </div>
         </div>
       </div>
