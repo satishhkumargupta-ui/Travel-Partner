@@ -38,7 +38,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
 
         {/* Logo */}
         <a href="/" className={`flex items-center transition-colors duration-300 ${logoCls}`}>
-          <WanderlightLogo className="h-10 w-10" />
+          <WanderlightLogo className="h-11 w-auto" />
         </a>
 
         {/* Desktop nav */}
