@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { X, Star, Clock, Calendar } from "lucide-react"
+import { X, Star, Clock, Calendar, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Destination } from "@/components/destinations"
+
+const WEB3FORMS_KEY = "c33698a9-efe3-4165-a0ca-4aee6e4c9ef0"
 
 type Props = {
   destination: Destination | null
@@ -16,7 +18,9 @@ export function DestinationModal({ destination, onClose }: Props) {
   const [email, setEmail] = useState("")
   const [date, setDate] = useState("")
   const [guests, setGuests] = useState("2")
+  const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState("")
 
   useEffect(() => {
     if (destination) {
@@ -26,21 +30,54 @@ export function DestinationModal({ destination, onClose }: Props) {
       setEmail("")
       setDate("")
       setGuests("2")
+      setError("")
     }
-    return () => {
-      document.body.style.overflow = ""
-    }
+    return () => { document.body.style.overflow = "" }
   }, [destination])
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose()
-    }
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [onClose])
 
   if (!destination) return null
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    try {
+      const payload = new FormData()
+      payload.append("access_key", WEB3FORMS_KEY)
+      payload.append("subject", `Destination Enquiry — ${destination!.name}, ${destination!.country}`)
+      payload.append("from_name", "Wanderlight Travel")
+      payload.append("name", name)
+      payload.append("email", email)
+      payload.append("destination", `${destination!.name}, ${destination!.country}`)
+      payload.append("travel_date", date || "Flexible")
+      payload.append("travelers", guests)
+      payload.append("package_price", destination!.price)
+      payload.append("duration", destination!.duration)
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: payload,
+      })
+      const data = await res.json()
+
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setError(data.message || "Something went wrong. Please try again.")
+      }
+    } catch {
+      setError("Network error — please check your connection and try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -130,19 +167,13 @@ export function DestinationModal({ destination, onClose }: Props) {
             </ul>
           </div>
 
-          {/* Enquiry form */}
+          {/* Enquiry form / success */}
           {!submitted ? (
             <div className="rounded-2xl border border-border bg-secondary p-5">
               <h3 className="font-serif text-lg font-semibold text-foreground mb-4">
                 Enquire about this trip
               </h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  if (name && email) setSubmitted(true)
-                }}
-                className="flex flex-col gap-3"
-              >
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1 block">
@@ -200,8 +231,24 @@ export function DestinationModal({ destination, onClose }: Props) {
                     </select>
                   </div>
                 </div>
-                <Button type="submit" size="lg" className="rounded-full mt-1 w-full">
-                  Send enquiry
+
+                {error && (
+                  <p className="rounded-xl bg-destructive/10 border border-destructive/20 px-4 py-2.5 text-sm text-destructive">
+                    {error}
+                  </p>
+                )}
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={loading}
+                  className="rounded-full mt-1 w-full"
+                >
+                  {loading ? (
+                    <><Loader2 className="size-4 animate-spin" /> Sending…</>
+                  ) : (
+                    "Send enquiry"
+                  )}
                 </Button>
               </form>
             </div>

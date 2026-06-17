@@ -1,12 +1,28 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X } from "lucide-react"
+import { X, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-const DESTINATIONS = ["Santorini, Greece", "Kyoto, Japan", "Swiss Alps, Switzerland", "Marrakech, Morocco", "Bali, Indonesia", "Somewhere new — surprise me!"]
+const WEB3FORMS_KEY = "c33698a9-efe3-4165-a0ca-4aee6e4c9ef0"
+
+const DESTINATIONS = [
+  "Santorini, Greece",
+  "Kyoto, Japan",
+  "Swiss Alps, Switzerland",
+  "Marrakech, Morocco",
+  "Bali, Indonesia",
+  "Somewhere new — surprise me!",
+]
 const BUDGETS = ["Under $2,000", "$2,000 – $3,000", "$3,000 – $5,000", "$5,000+"]
-const STYLES = ["Relaxation & beaches", "Culture & history", "Adventure & nature", "Food & wine", "Luxury & wellness", "Family-friendly"]
+const STYLES = [
+  "Relaxation & beaches",
+  "Culture & history",
+  "Adventure & nature",
+  "Food & wine",
+  "Luxury & wellness",
+  "Family-friendly",
+]
 
 type Form = {
   destination: string
@@ -20,13 +36,13 @@ type Form = {
   notes: string
 }
 
-type Props = {
-  onClose: () => void
-}
+type Props = { onClose: () => void }
 
 export function BookingModal({ onClose }: Props) {
   const [step, setStep] = useState(1)
+  const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState("")
   const [form, setForm] = useState<Form>({
     destination: "",
     date: "",
@@ -45,9 +61,7 @@ export function BookingModal({ onClose }: Props) {
   }, [])
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose()
-    }
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [onClose])
@@ -56,10 +70,44 @@ export function BookingModal({ onClose }: Props) {
     setForm((f) => ({ ...f, ...fields }))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (step < 2) { setStep(step + 1); return }
-    if (form.name && form.email) setSubmitted(true)
+    if (step < 2) { setStep(2); return }
+
+    setLoading(true)
+    setError("")
+
+    try {
+      const payload = new FormData()
+      payload.append("access_key", WEB3FORMS_KEY)
+      payload.append("subject", `Trip Enquiry — ${form.destination || "Flexible destination"}`)
+      payload.append("from_name", "Wanderlight Travel")
+      payload.append("name", form.name)
+      payload.append("email", form.email)
+      payload.append("phone", form.phone || "Not provided")
+      payload.append("destination", form.destination || "Flexible")
+      payload.append("travel_date", form.date || "Flexible")
+      payload.append("travelers", form.travelers)
+      payload.append("budget", form.budget || "Flexible")
+      payload.append("travel_style", form.style || "Not specified")
+      payload.append("notes", form.notes || "None")
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: payload,
+      })
+      const data = await res.json()
+
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setError(data.message || "Something went wrong. Please try again.")
+      }
+    } catch {
+      setError("Network error — please check your connection and try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inputCls =
@@ -112,17 +160,18 @@ export function BookingModal({ onClose }: Props) {
           {submitted ? (
             <div className="text-center py-4">
               <p className="text-5xl mb-4" aria-hidden="true">🌍</p>
-              <p className="text-muted-foreground max-w-xs mx-auto">
-                Thanks <span className="font-medium text-foreground">{form.name}</span>! Our travel
-                experts will reach out to{" "}
-                <span className="font-medium text-foreground">{form.email}</span> within 24 hours to
-                craft your perfect journey.
+              <p className="font-serif text-lg font-semibold text-foreground mb-2">
+                Thanks, {form.name}!
+              </p>
+              <p className="text-muted-foreground max-w-xs mx-auto text-sm">
+                Your trip request has been sent. Our travel experts will reach out to{" "}
+                <span className="font-medium text-foreground">{form.email}</span> within 24 hours.
               </p>
               {form.destination && (
                 <div className="mt-4 rounded-xl bg-secondary px-4 py-3 text-sm text-muted-foreground">
-                  ✈️ &nbsp;
+                  ✈️&nbsp;
                   <span className="font-medium text-foreground">{form.destination}</span>
-                  {form.travelers && ` · ${form.travelers} traveler${Number(form.travelers) > 1 ? "s" : ""}`}
+                  {` · ${form.travelers} traveler${Number(form.travelers) > 1 ? "s" : ""}`}
                   {form.budget && ` · ${form.budget}`}
                 </div>
               )}
@@ -285,14 +334,20 @@ export function BookingModal({ onClose }: Props) {
 
                   {/* Summary */}
                   <div className="rounded-xl bg-secondary px-4 py-3 text-sm">
-                    <p className="font-medium text-foreground mb-1">Your trip summary</p>
+                    <p className="font-medium text-foreground mb-0.5">Your trip summary</p>
                     <p className="text-muted-foreground">
                       {form.destination || "Destination TBD"} &middot;{" "}
-                      {form.travelers} traveler{Number(form.travelers) > 1 ? "s" : ""} &middot;{" "}
-                      {form.budget || "Budget flexible"}
+                      {form.travelers} traveler{Number(form.travelers) > 1 ? "s" : ""}
+                      {form.budget && ` · ${form.budget}`}
                       {form.style && ` · ${form.style}`}
                     </p>
                   </div>
+
+                  {error && (
+                    <p className="rounded-xl bg-destructive/10 border border-destructive/20 px-4 py-2.5 text-sm text-destructive">
+                      {error}
+                    </p>
+                  )}
                 </>
               )}
 
@@ -302,13 +357,20 @@ export function BookingModal({ onClose }: Props) {
                     type="button"
                     variant="outline"
                     onClick={() => setStep(1)}
+                    disabled={loading}
                     className="rounded-full flex-1"
                   >
                     Back
                   </Button>
                 )}
-                <Button type="submit" size="lg" className="rounded-full flex-1">
-                  {step === 1 ? "Continue" : "Send request"}
+                <Button type="submit" size="lg" disabled={loading} className="rounded-full flex-1">
+                  {loading ? (
+                    <><Loader2 className="size-4 animate-spin" /> Sending…</>
+                  ) : step === 1 ? (
+                    "Continue"
+                  ) : (
+                    "Send request"
+                  )}
                 </Button>
               </div>
             </form>
