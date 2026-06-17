@@ -79,9 +79,11 @@ export function Hero({ onSearch }: Props) {
                   const val = e.target.value
                   const year = val.split("-")[0]
                   if (year && year.length > 4) return
-                  const today = new Date().toISOString().split("T")[0]
-                  if (val && val < today) return
                   setWhen(val)
+                }}
+                onBlur={(e) => {
+                  const today = new Date().toISOString().split("T")[0]
+                  if (e.target.value && e.target.value < today) setWhen("")
                 }}
                 min={new Date().toISOString().split("T")[0]}
                 max="9999-12-31"
