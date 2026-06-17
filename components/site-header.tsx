@@ -21,13 +21,27 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const [activeTab, setActiveTab] = useState("")
   const pathname                  = usePathname()
 
+  // Scroll detection
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60)
     window.addEventListener("scroll", handler, { passive: true })
     return () => window.removeEventListener("scroll", handler)
   }, [])
 
-  // When navigating away from home, clear any hash-tab selection
+  // Sync activeTab from the URL hash on mount AND whenever the hash changes
+  // (covers: direct URL load, browser back/forward, Link navigation)
+  useEffect(() => {
+    const sync = () => {
+      if (window.location.pathname === "/" && window.location.hash) {
+        setActiveTab("/" + window.location.hash) // e.g. "/#stories"
+      }
+    }
+    sync() // run on mount
+    window.addEventListener("hashchange", sync)
+    return () => window.removeEventListener("hashchange", sync)
+  }, [])
+
+  // When navigating to a non-home page, clear hash tab selection
   useEffect(() => {
     if (pathname !== "/") setActiveTab("")
   }, [pathname])
@@ -35,14 +49,13 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
-    // Page link (/about): matched by pathname
     if (!href.includes("#")) return pathname === href
-    // Hash link (/#destinations): matched only when explicitly clicked
     return activeTab === href
   }
 
   function handleNavClick(href: string) {
-    setActiveTab(href)
+    // Set immediately for instant visual feedback
+    setActiveTab(href.includes("#") ? href : "")
   }
 
   return (
@@ -55,7 +68,12 @@ export function SiteHeader({ onBookingOpen }: Props) {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-8">
 
-        <Link href="/" className={`flex items-center transition-colors duration-300 ${logoCls}`}>
+        {/* Clicking logo clears hash tab selection */}
+        <Link
+          href="/"
+          onClick={() => setActiveTab("")}
+          className={`flex items-center transition-colors duration-300 ${logoCls}`}
+        >
           <WanderlightLogo className="h-20 w-auto" />
         </Link>
 
@@ -68,12 +86,12 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 key={link.label}
                 href={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className={`group relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
+                className={`group relative px-4 py-2 text-sm tracking-wide transition-colors duration-200 ${
                   active
-                    ? "text-amber-400 font-semibold"
+                    ? "font-semibold text-amber-400"
                     : scrolled
-                      ? "text-foreground/70 hover:text-foreground"
-                      : "text-white/80 hover:text-white"
+                      ? "font-medium text-foreground/70 hover:text-foreground"
+                      : "font-medium text-white/80 hover:text-white"
                 }`}
               >
                 {link.label}
