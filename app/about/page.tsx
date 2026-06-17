@@ -83,26 +83,43 @@ export default function AboutPage() {
           sizes="100vw"
         />
 
-        {/* Layered overlays for depth + text legibility */}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-black/30" />
+        {/* Cinematic colour grade — warm golden hour */}
+        {/* Base darkening */}
+        <div className="absolute inset-0 bg-black/40" />
+        {/* Warm amber/gold wash from bottom-right (sun source) */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(27,26,94,0.45) 0%, transparent 70%)",
+              "radial-gradient(ellipse 70% 55% at 80% 75%, rgba(232,144,42,0.38) 0%, transparent 65%)",
           }}
         />
-
-        {/* Dot grid */}
+        {/* Cool deep-blue shadow on top-left for contrast */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          className="absolute inset-0"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)",
-            backgroundSize: "36px 36px",
+            background:
+              "radial-gradient(ellipse 60% 50% at 10% 10%, rgba(10,14,60,0.55) 0%, transparent 70%)",
           }}
         />
+        {/* Soft magenta/rose mid-tone for cinematic feel */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 40% at 50% 30%, rgba(180,60,90,0.18) 0%, transparent 65%)",
+          }}
+        />
+        {/* Vignette — dark edges */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 45%, rgba(0,0,0,0.65) 100%)",
+          }}
+        />
+        {/* Bottom fade into page background */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
         {/* Content */}
         <div className="relative mx-auto max-w-4xl px-6 text-center pt-24">
