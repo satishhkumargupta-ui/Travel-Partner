@@ -1,6 +1,6 @@
 "use client"
 
-import { Globe } from "lucide-react"
+import { WanderlightLogo } from "@/components/logo"
 
 const columns = [
   {
@@ -39,7 +39,7 @@ export function SiteFooter({ onContactOpen }: Props) {
         <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
           <div className="col-span-2">
             <a href="/" className="flex items-center gap-2 text-foreground">
-              <Globe className="size-6 text-primary" aria-hidden="true" />
+              <WanderlightLogo className="h-8 w-auto text-primary" />
               <span className="font-serif text-xl font-semibold">Wanderlight</span>
             </a>
             <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">

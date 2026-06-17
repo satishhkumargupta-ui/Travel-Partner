@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Globe, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { WanderlightLogo } from "@/components/logo"
 
 const navLinks = [
   { label: "Destinations", href: "#destinations" },
@@ -22,7 +23,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
     <header className="absolute inset-x-0 top-0 z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5 lg:px-8">
         <a href="/" className="flex items-center gap-2 text-background">
-          <Globe className="size-6" aria-hidden="true" />
+          <WanderlightLogo className="h-8 w-auto" />
           <span className="font-serif text-xl font-semibold tracking-tight">Wanderlight</span>
         </a>
 
