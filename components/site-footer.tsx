@@ -57,19 +57,17 @@ export function SiteFooter({ onContactOpen }: Props) {
 
             {/* Social */}
             <div className="mt-6 flex gap-3">
-              <a
-                href="https://www.instagram.com/mrnoveember/"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => window.open("https://www.instagram.com/mrnoveember/", "_blank", "noopener,noreferrer")}
                 aria-label="Instagram"
                 className="flex size-9 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
               >
-                <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="pointer-events-none size-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" aria-hidden="true">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                   <circle cx="12" cy="12" r="4.5"/>
                   <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
                 </svg>
-              </a>
+              </button>
             </div>
           </div>
 
