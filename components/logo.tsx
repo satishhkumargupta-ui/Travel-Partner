@@ -3,101 +3,134 @@ type Props = { className?: string }
 export function WanderlightLogo({ className }: Props) {
   return (
     <svg
-      viewBox="0 0 64 68"
+      viewBox="0 0 72 70"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="Wanderlight"
     >
       <defs>
-        {/* Brand gradient — top-left → bottom-right */}
-        <linearGradient id="wlG" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%"   stopColor="#1b1a5e" />
-          <stop offset="48%"  stopColor="#7c3f96" />
-          <stop offset="100%" stopColor="#e8902a" />
+        {/* Golden dome gradient — light top, rich base */}
+        <linearGradient id="wlDome" x1="36" y1="6" x2="36" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#F0DC80"/>
+          <stop offset="55%"  stopColor="#C9A84C"/>
+          <stop offset="100%" stopColor="#9A7428"/>
         </linearGradient>
-
-        {/* Clip inner circle only (globe head) */}
-        <clipPath id="wlHead">
-          <circle cx="32" cy="26" r="20" />
-        </clipPath>
-
-        {/* Drop shadow */}
-        <filter id="wlDrop" x="-20%" y="-20%" width="140%" height="160%">
-          <feDropShadow dx="0" dy="3" stdDeviation="3"
-            floodColor="#7c3f96" floodOpacity="0.30" />
-        </filter>
       </defs>
 
-      {/* ── Location pin shape ── */}
+      {/* ════════════════════════════════════
+          HIMALAYAS — medium navy, peek from
+          left and right behind the Taj dome
+      ════════════════════════════════════ */}
+      {/* Left range: 3 peaks */}
       <path
-        d="M32,6
-           C21,6 12,15 12,26
-           C12,36.5 18.5,45 26.5,52
-           L32,62
-           L37.5,52
-           C45.5,45 52,36.5 52,26
-           C52,15 43,6 32,6 Z"
-        fill="url(#wlG)"
-        filter="url(#wlDrop)"
+        d="M0,56 L8,28 L14,38 L20,20 L26,32 L28,56 Z"
+        fill="#1A3561" opacity="0.80"
+      />
+      {/* Right range (mirror) */}
+      <path
+        d="M44,56 L46,32 L52,20 L58,38 L64,28 L72,56 Z"
+        fill="#1A3561" opacity="0.80"
+      />
+      {/* Snow cap dots on highest peaks */}
+      <circle cx="20" cy="20" r="2"   fill="#DDEEFF" opacity="0.70"/>
+      <circle cx="52" cy="20" r="2"   fill="#DDEEFF" opacity="0.70"/>
+      <circle cx="8"  cy="28" r="1.4" fill="#DDEEFF" opacity="0.50"/>
+      <circle cx="64" cy="28" r="1.4" fill="#DDEEFF" opacity="0.50"/>
+
+      {/* ════════════════════════════════════
+          PLATFORM / PLINTH (3 tiers)
+      ════════════════════════════════════ */}
+      <rect x="6"  y="60" width="60" height="4" rx="0.8" fill="#0B1F3A"/>
+      <rect x="12" y="56" width="48" height="4" rx="0.6" fill="#0B1F3A"/>
+
+      {/* ════════════════════════════════════
+          TAJ MAHAL BODY with iwān arch cutout
+      ════════════════════════════════════ */}
+      <path
+        fillRule="evenodd"
+        d="M22,56 L22,44 L50,44 L50,56 Z
+           M30,56 L30,50 C30,46 33,44 36,43.2
+           C39,44 42,46 42,50 L42,56 Z"
+        fill="#0B1F3A"
       />
 
-      {/* ── Globe grid (white, inside pin head only) ── */}
-      <g clipPath="url(#wlHead)">
+      {/* ════════════════════════════════════
+          LEFT MINARET
+      ════════════════════════════════════ */}
+      <rect x="12" y="22" width="3" height="34" fill="#0B1F3A"/>
+      {/* Octagonal minaret dome */}
+      <path d="M12,22 C12,19 13.5,16 13.5,15 C13.5,16 15,19 15,22 Z" fill="#0B1F3A"/>
+      {/* Balcony ring */}
+      <rect x="10.5" y="37" width="6" height="1.5" rx="0.6" fill="#0B1F3A"/>
 
-        {/* Equator */}
-        <line
-          x1="12" y1="26" x2="52" y2="26"
-          stroke="white" strokeWidth="0.7" strokeOpacity="0.30"
-        />
+      {/* ════════════════════════════════════
+          RIGHT MINARET
+      ════════════════════════════════════ */}
+      <rect x="57" y="22" width="3" height="34" fill="#0B1F3A"/>
+      <path d="M57,22 C57,19 58.5,16 58.5,15 C58.5,16 60,19 60,22 Z" fill="#0B1F3A"/>
+      <rect x="55.5" y="37" width="6" height="1.5" rx="0.6" fill="#0B1F3A"/>
 
-        {/* Left meridian */}
-        <path
-          d="M32,6 Q20,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"
-        />
-        {/* Right meridian */}
-        <path
-          d="M32,6 Q44,26 32,52"
-          stroke="white" strokeWidth="0.6" strokeOpacity="0.28" fill="none"
-        />
+      {/* ════════════════════════════════════
+          MAIN TAJ DOME (iconic onion shape)
+          Gold gradient fill
+      ════════════════════════════════════ */}
+      <path
+        d="M26,44
+           C22,38 18,32 20,24
+           C22,16 28,10 36,6
+           C44,10 50,16 52,24
+           C54,32 50,38 46,44 Z"
+        fill="url(#wlDome)"
+      />
+      {/* Dome sheen line */}
+      <path
+        d="M26,44 C22,38 18,32 20,24 C22,16 28,10 36,6 C44,10 50,16 52,24 C54,32 50,38 46,44"
+        stroke="#F8ECA0" strokeWidth="0.45" fill="none" strokeOpacity="0.40"
+      />
 
-        {/* Upper latitude */}
-        <path
-          d="M17,17 Q32,12 47,17"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"
-        />
-        {/* Lower latitude */}
-        <path
-          d="M14,35 Q32,41 50,35"
-          stroke="white" strokeWidth="0.5" strokeOpacity="0.20" fill="none"
-        />
+      {/* ════════════════════════════════════
+          AIRPLANE FINIAL at dome apex
+          (replaces traditional thamam —
+           saffron, top-down airplane silhouette)
+      ════════════════════════════════════ */}
+      {/* Fuselage */}
+      <line x1="36" y1="1.5" x2="36" y2="6"
+            stroke="#E8902A" strokeWidth="1.8" strokeLinecap="round"/>
+      {/* Main wings */}
+      <line x1="32" y1="3.8" x2="40" y2="3.8"
+            stroke="#E8902A" strokeWidth="1.1" strokeLinecap="round"/>
+      {/* Tail fins */}
+      <line x1="34.3" y1="5.6" x2="37.7" y2="5.6"
+            stroke="#E8902A" strokeWidth="0.7" strokeLinecap="round"/>
 
-      </g>
+      {/* ════════════════════════════════════
+          SAFFRON FLIGHT ARC
+          Dashed arc from city to city —
+          sweeps over the full composition
+      ════════════════════════════════════ */}
+      <path
+        d="M7,62 Q36,10 65,62"
+        stroke="#E8902A" strokeWidth="1.2"
+        strokeDasharray="3 2.2" fill="none"
+      />
+      {/* Departure city dot */}
+      <circle cx="7" cy="62" r="1.8" fill="#E8902A"/>
+      {/* Arrival arrowhead / plane */}
+      <polygon points="68.5,62 63.5,59.5 63.5,64.5" fill="#E8902A"/>
 
-      {/* ── Airplane (white, top-down, pointing upward / north) ── */}
-      <g clipPath="url(#wlHead)">
-        <path
-          d="M32,13
-             C33,13 34,13.8 34,15.2
-             L34,21.5
-             L43,25 L43,27.5
-             L34,24
-             L34,30
-             L37,31.5 L37,33
-             L32,31.5
-             L27,33  L27,31.5
-             L30,30
-             L30,24
-             L21,27.5 L21,25
-             L30,21.5
-             L30,15.2
-             C30,13.8 31,13 32,13 Z"
-          fill="white"
-          fillOpacity="0.96"
-        />
-      </g>
-
+      {/* ════════════════════════════════════
+          KERALA BACKWATERS — teal wave pair
+          at the very bottom of composition
+      ════════════════════════════════════ */}
+      <path
+        d="M2,66 Q18,63 36,66 Q54,69 70,66"
+        stroke="#009688" strokeWidth="1.3" fill="none"
+      />
+      <path
+        d="M6,68.2 Q22,66 36,68.2 Q50,70.4 66,68.2"
+        stroke="#009688" strokeWidth="0.6" fill="none" strokeOpacity="0.55"
+      />
     </svg>
   )
 }
