@@ -348,16 +348,24 @@ export function Destinations({ searchQuery = "" }: Props) {
       {/* Header + filters */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div>
-          <p className="mb-3 text-sm font-medium uppercase tracking-[0.25em] text-primary">
+          <p
+            className="mb-3 text-sm font-medium uppercase tracking-[0.25em]"
+            style={{
+              background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             Featured destinations
           </p>
           <div className="flex flex-wrap items-end gap-6">
-            <h2 className="text-balance font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+            <h2 className="text-balance font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
               Places worth the journey
             </h2>
             <Link
               href="/destinations"
-              className="mb-1 inline-flex items-center gap-1 text-sm font-medium text-primary transition-opacity hover:opacity-70"
+              className="mb-1 inline-flex items-center gap-1 text-sm font-medium text-amber-400 transition-opacity hover:opacity-70"
             >
               View all
               <ArrowUpRight className="size-4" aria-hidden="true" />
@@ -373,15 +381,15 @@ export function Destinations({ searchQuery = "" }: Props) {
               onClick={() => handleFilterChange(f)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 activeFilter === f
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  ? "border border-amber-400/40 bg-amber-400/15 text-amber-300"
+                  : "border border-white/15 bg-white/8 text-white/60 hover:border-white/30 hover:text-white"
               }`}
             >
               {f}
             </button>
           ))}
           {searchQuery && (
-            <span className="rounded-full border border-border bg-muted px-4 py-1.5 text-sm text-muted-foreground">
+            <span className="rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-sm text-white/50">
               Searching: &ldquo;{searchQuery}&rdquo;
             </span>
           )}
@@ -394,38 +402,38 @@ export function Destinations({ searchQuery = "" }: Props) {
         <button
           onClick={scrollPrev}
           aria-label="Previous destinations"
-          className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-border bg-background/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:left-4 ${
+          className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:left-4 ${
             canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none -translate-x-2"
           }`}
         >
-          <ChevronLeft className="size-5 text-foreground" />
+          <ChevronLeft className="size-5 text-white" />
         </button>
 
         {/* Next arrow — always rendered, fades in/out */}
         <button
           onClick={scrollNext}
           aria-label="Next destinations"
-          className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-border bg-background/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:right-4 ${
+          className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:right-4 ${
             canScrollRight && visible.length > 0 ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none translate-x-2"
           }`}
         >
-          <ChevronRight className="size-5 text-foreground" />
+          <ChevronRight className="size-5 text-white" />
         </button>
 
         {/* Left fade — smooth opacity transition */}
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-20 bg-gradient-to-r from-background to-transparent transition-opacity duration-300"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-20 bg-gradient-to-r from-[#0d0b1e] to-transparent transition-opacity duration-300"
           style={{ opacity: canScrollLeft ? 1 : 0 }}
         />
         {/* Right fade */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-20 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-20 bg-gradient-to-l from-[#0d0b1e] to-transparent" />
 
         {/* Scroll track — no snap, no scroll-smooth (handled by RAF animation) */}
         {visible.length === 0 ? (
           <div className="flex items-center justify-center py-20 text-center">
             <div>
-              <p className="font-serif text-2xl text-foreground">No destinations found</p>
-              <p className="mt-2 text-muted-foreground">Try a different search term or filter.</p>
+              <p className="font-serif text-2xl text-white">No destinations found</p>
+              <p className="mt-2 text-white/50">Try a different search term or filter.</p>
             </div>
           </div>
         ) : (
@@ -448,9 +456,9 @@ export function Destinations({ searchQuery = "" }: Props) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
-                  <span className="absolute left-4 top-4 rounded-full bg-card/90 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+                  <span className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur">
                     {d.tag}
                   </span>
 

@@ -22,7 +22,7 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen" style={{ background: "linear-gradient(140deg,#0d0b1e 0%,#1b1040 30%,#2e1b50 58%,#160d28 100%)" }}>
       <SiteHeader onBookingOpen={() => {}} />
       <Hero onSearch={handleSearch} />
       <Destinations searchQuery={searchQuery} />
