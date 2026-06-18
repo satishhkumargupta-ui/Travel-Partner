@@ -6,15 +6,23 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import {
   ArrowLeft, Star, Clock, Calendar, MapPin,
-  CheckCircle2, Loader2, Users, Shield, HeartHandshake,
+  CheckCircle2, Loader2, Users, Shield, HeartHandshake, Sparkles,
 } from "lucide-react"
 import { allDestinations } from "@/components/destinations"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { BookingModal } from "@/components/booking-modal"
 import { ContactModal } from "@/components/contact-modal"
 
 const WEB3FORMS_KEY = "c33698a9-efe3-4165-a0ca-4aee6e4c9ef0"
+
+const HIGHLIGHT_COLORS = [
+  { color: "#fbbf24", bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.22)", glow: "rgba(251,191,36,0.14)" },
+  { color: "#c084fc", bg: "rgba(192,132,252,0.08)", border: "rgba(192,132,252,0.22)", glow: "rgba(192,132,252,0.14)" },
+  { color: "#34d399", bg: "rgba(52,211,153,0.08)",  border: "rgba(52,211,153,0.22)", glow: "rgba(52,211,153,0.14)" },
+  { color: "#60a5fa", bg: "rgba(96,165,250,0.08)",  border: "rgba(96,165,250,0.22)", glow: "rgba(96,165,250,0.14)" },
+  { color: "#f472b6", bg: "rgba(244,114,182,0.08)", border: "rgba(244,114,182,0.22)", glow: "rgba(244,114,182,0.14)" },
+  { color: "#fb923c", bg: "rgba(251,146,60,0.08)",  border: "rgba(251,146,60,0.22)", glow: "rgba(251,146,60,0.14)" },
+]
 
 export default function DestinationPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -23,63 +31,61 @@ export default function DestinationPage() {
     (d) => d.name.toLowerCase().replace(/\s+/g, "-") === slug,
   )
 
-  const [bookingOpen,  setBookingOpen]  = useState(false)
-  const [contactOpen,  setContactOpen]  = useState(false)
-  const [name,         setName]         = useState("")
-  const [email,        setEmail]        = useState("")
-  const [phone,        setPhone]        = useState("")
-  const [date,         setDate]         = useState("")
-  const [guests,       setGuests]       = useState("2")
-  const [notes,        setNotes]        = useState("")
-  const [loading,      setLoading]      = useState(false)
-  const [submitted,    setSubmitted]    = useState(false)
-  const [error,        setError]        = useState("")
+  const [contactOpen, setContactOpen] = useState(false)
+  const [name,        setName]        = useState("")
+  const [email,       setEmail]       = useState("")
+  const [phone,       setPhone]       = useState("")
+  const [date,        setDate]        = useState("")
+  const [guests,      setGuests]      = useState("2")
+  const [notes,       setNotes]       = useState("")
+  const [loading,     setLoading]     = useState(false)
+  const [submitted,   setSubmitted]   = useState(false)
+  const [error,       setError]       = useState("")
+
+  const inputCls =
+    "w-full rounded-xl border border-white/12 bg-white/6 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-amber-400/45 focus:ring-1 focus:ring-amber-400/20 transition-all [color-scheme:dark] backdrop-blur-sm"
 
   if (!destination) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <SiteHeader onBookingOpen={() => setBookingOpen(true)} />
+      <div
+        className="flex min-h-screen flex-col"
+        style={{ background: "linear-gradient(140deg,#0d0b1e 0%,#1b1040 30%,#2e1b50 58%,#160d28 100%)" }}
+      >
+        <SiteHeader onBookingOpen={() => {}} />
         <div className="flex flex-1 items-center justify-center px-6 py-20 text-center">
           <div>
-            <h1 className="mb-3 font-serif text-3xl text-foreground">Destination not found</h1>
-            <p className="mb-6 text-muted-foreground">
-              The destination you&apos;re looking for doesn&apos;t exist or may have moved.
-            </p>
-            <Link
-              href="/#destinations"
-              className="inline-flex items-center gap-2 text-primary hover:underline"
-            >
+            <h1 className="mb-3 font-serif text-3xl text-white">Destination not found</h1>
+            <p className="mb-6 text-white/50">The destination you&apos;re looking for doesn&apos;t exist or may have moved.</p>
+            <Link href="/destinations" className="inline-flex items-center gap-2 text-amber-400 hover:opacity-80">
               <ArrowLeft className="size-4" /> Back to all destinations
             </Link>
           </div>
         </div>
-        {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
       </div>
     )
   }
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
-    setLoading(true)
-    setError("")
+    if (!destination) return
+    setLoading(true); setError("")
     try {
       const payload = new FormData()
       payload.append("access_key",    WEB3FORMS_KEY)
-      payload.append("subject",       `Destination Enquiry — ${destination!.name}, ${destination!.country}`)
+      payload.append("subject",       `Destination Enquiry — ${destination.name}, ${destination.country}`)
       payload.append("from_name",     "Wanderlight Travel")
       payload.append("name",          name)
       payload.append("email",         email)
-      payload.append("phone",         phone || "Not provided")
-      payload.append("destination",   `${destination!.name}, ${destination!.country}`)
-      payload.append("travel_date",   date || "Flexible")
+      payload.append("phone",         phone  || "Not provided")
+      payload.append("destination",   `${destination.name}, ${destination.country}`)
+      payload.append("travel_date",   date   || "Flexible")
       payload.append("travelers",     guests)
-      payload.append("package_price", destination!.price)
-      payload.append("duration",      destination!.duration)
-      payload.append("notes",         notes || "None")
+      payload.append("package_price", destination.price)
+      payload.append("duration",      destination.duration)
+      payload.append("notes",         notes  || "None")
 
       const res  = await fetch("https://api.web3forms.com/submit", { method: "POST", body: payload })
       const data = await res.json()
-
       if (data.success) setSubmitted(true)
       else setError(data.message || "Something went wrong. Please try again.")
     } catch {
@@ -92,106 +98,142 @@ export default function DestinationPage() {
   const today = new Date().toISOString().split("T")[0]
 
   return (
-    <div className="min-h-screen bg-background">
-      <SiteHeader onBookingOpen={() => setBookingOpen(true)} />
+    <div
+      className="min-h-screen"
+      style={{ background: "linear-gradient(140deg,#0d0b1e 0%,#1b1040 30%,#2e1b50 58%,#160d28 100%)" }}
+    >
+      <SiteHeader onBookingOpen={() => {}} />
 
-      {/* ── Hero ── */}
-      <section className="relative h-[75vh] min-h-[520px] w-full overflow-hidden">
+      {/* Ambient blobs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute left-1/4 top-24 h-96 w-96 rounded-full opacity-18 blur-3xl"
+          style={{ background: "radial-gradient(circle,#7c3f96,transparent 70%)" }} />
+        <div className="absolute bottom-1/3 right-10 h-72 w-72 rounded-full opacity-12 blur-3xl"
+          style={{ background: "radial-gradient(circle,#e8902a,transparent 70%)" }} />
+      </div>
+
+      {/* ── Cinematic Hero ── */}
+      <section className="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
         <Image
           src={destination.image}
           alt={`${destination.name}, ${destination.country}`}
-          fill
-          priority
+          fill priority
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent" />
+        {/* Multi-layer overlays for depth — pointer-events-none so links beneath stay clickable */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/15" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(ellipse 80% 60% at 15% 90%, rgba(124,63,150,0.30) 0%, transparent 60%)" }}
+        />
 
-        {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-12 lg:px-8 lg:pb-16">
+        {/* Brand accent top line */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: "linear-gradient(90deg,transparent,#7c3f96 40%,#e8902a 60%,transparent)" }} />
+
+        {/* Breadcrumb — top left */}
+        <nav aria-label="Breadcrumb" className="absolute left-6 top-24 lg:left-8">
+          <ol className="flex items-center gap-1.5 text-xs text-white/50">
+            <li><Link href="/" className="transition-colors hover:text-white">Home</Link></li>
+            <li className="text-white/25">/</li>
+            <li><Link href="/destinations" className="transition-colors hover:text-white">Destinations</Link></li>
+            <li className="text-white/25">/</li>
+            <li className="text-white/80">{destination.name}</li>
+          </ol>
+        </nav>
+
+        {/* Hero content — bottom anchored */}
+        <div className="absolute bottom-0 left-0 right-0 px-6 pb-14 lg:px-8 lg:pb-20">
           <div className="mx-auto max-w-7xl">
+            {/* Tag + rating */}
             <div className="mb-5 flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
+              <span
+                className="rounded-full px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-md"
+                style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.20)" }}
+              >
                 {destination.tag}
               </span>
-              <div className="flex items-center gap-2 text-white/80">
-                <Star className="size-4 fill-current text-amber-400" />
-                <span className="font-semibold text-white">{destination.rating}</span>
-                <span className="text-white/50">·</span>
-                <span className="text-sm">{destination.duration}</span>
+              <div
+                className="flex items-center gap-2 rounded-full px-3 py-1.5 backdrop-blur-md"
+                style={{ background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.30)" }}
+              >
+                <Star className="size-3.5 fill-current text-amber-400" />
+                <span className="text-sm font-semibold text-amber-300">{destination.rating}</span>
+                <span className="text-white/40 text-xs">/ 5.0</span>
               </div>
             </div>
-            <h1 className="font-serif text-5xl font-semibold leading-none tracking-tight text-white drop-shadow-2xl sm:text-6xl lg:text-8xl">
+
+            {/* Destination name */}
+            <h1
+              className="font-serif font-semibold leading-none tracking-tight text-white drop-shadow-2xl"
+              style={{ fontSize: "clamp(3rem,8vw,7rem)" }}
+            >
               {destination.name}
             </h1>
-            <div className="mt-4 flex items-center gap-2">
-              <MapPin className="size-5 text-amber-400" />
-              <span className="text-xl font-light text-white/80">{destination.country}</span>
+
+            {/* Country + duration */}
+            <div className="mt-4 flex flex-wrap items-center gap-5">
+              <div className="flex items-center gap-2">
+                <MapPin className="size-5 text-amber-400" />
+                <span className="text-xl font-light text-white/75">{destination.country}</span>
+              </div>
+              <div className="h-4 w-px bg-white/20" />
+              <div className="flex items-center gap-2">
+                <Clock className="size-4 text-white/45" />
+                <span className="text-sm text-white/55">{destination.duration}</span>
+              </div>
+              <div className="h-4 w-px bg-white/20" />
+              <div className="flex items-center gap-2">
+                <Calendar className="size-4 text-white/45" />
+                <span className="text-sm text-white/55">Best: {destination.bestTime}</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Breadcrumb ── */}
-      <nav aria-label="Breadcrumb" className="border-b border-border bg-background">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <ol className="flex items-center gap-1.5 py-3 text-sm">
-            <li>
-              <Link href="/" className="text-muted-foreground transition-colors hover:text-foreground">
-                Home
-              </Link>
-            </li>
-            <li className="text-muted-foreground/40">/</li>
-            <li>
-              <Link href="/#destinations" className="text-muted-foreground transition-colors hover:text-foreground">
-                Destinations
-              </Link>
-            </li>
-            <li className="text-muted-foreground/40">/</li>
-            <li className="font-medium text-foreground">{destination.name}</li>
-          </ol>
-        </div>
-      </nav>
-
       {/* ── Stats strip ── */}
-      <div className="border-b border-border bg-secondary">
+      <div
+        className="border-b border-white/8 backdrop-blur-xl"
+        style={{ background: "rgba(255,255,255,0.04)" }}
+      >
         <div className="mx-auto max-w-7xl overflow-x-auto px-6 py-5 lg:px-8">
-          <div className="flex min-w-max items-center gap-6 sm:min-w-0 sm:gap-8">
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                <Clock className="size-5 text-primary" />
+          <div className="flex min-w-max items-center gap-8 sm:min-w-0">
+            {[
+              { icon: Clock,    label: "Duration",         value: destination.duration, color: "#fbbf24" },
+              { icon: Calendar, label: "Best time",        value: destination.bestTime, color: "#c084fc" },
+              { icon: Star,     label: "Guest rating",     value: `${destination.rating} / 5.0`, color: "#34d399" },
+            ].map(({ icon: Icon, label, value, color }, i) => (
+              <div key={label} className="flex items-center gap-3">
+                {i > 0 && <div className="mr-5 h-8 w-px bg-white/10" />}
+                <div
+                  className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+                  style={{ background: `${color}14`, border: `1px solid ${color}28` }}
+                >
+                  <Icon className="size-4" style={{ color }} />
+                </div>
+                <div>
+                  <p className="text-xs text-white/35">{label}</p>
+                  <p className="text-sm font-semibold text-white">{value}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Duration</p>
-                <p className="text-sm font-semibold text-foreground">{destination.duration}</p>
-              </div>
-            </div>
-            <div className="h-8 w-px bg-border" />
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                <Calendar className="size-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Best time to visit</p>
-                <p className="text-sm font-semibold text-foreground">{destination.bestTime}</p>
-              </div>
-            </div>
-            <div className="h-8 w-px bg-border" />
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-amber-500/10">
-                <Star className="size-5 fill-current text-amber-400" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Guest rating</p>
-                <p className="text-sm font-semibold text-foreground">{destination.rating} / 5.0</p>
-              </div>
-            </div>
-            <div className="ml-auto">
-              <p className="text-xs text-muted-foreground">Starting from</p>
-              <p className="font-serif text-3xl font-semibold leading-none text-foreground">
+            ))}
+
+            <div className="ml-auto pl-8">
+              <p className="text-xs text-white/35">Starting from</p>
+              <p
+                className="font-serif font-semibold leading-none"
+                style={{
+                  fontSize: "clamp(1.6rem,3vw,2.2rem)",
+                  background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}
+              >
                 {destination.price}
-                <span className="ml-1 text-sm font-sans font-normal text-muted-foreground">/ person</span>
+                <span className="ml-1.5 font-sans text-sm font-normal text-white/35"
+                  style={{ WebkitTextFillColor: "rgba(255,255,255,0.35)" }}>/ person</span>
               </p>
             </div>
           </div>
@@ -199,254 +241,238 @@ export default function DestinationPage() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_400px]">
 
-          {/* Left: description + highlights + promise */}
-          <div className="space-y-14">
+          {/* ── Left column ── */}
+          <div className="space-y-16">
 
             {/* About */}
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+              <p
+                className="mb-3 text-xs font-semibold uppercase tracking-[0.30em]"
+                style={{
+                  background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}
+              >
                 About this journey
               </p>
-              <h2 className="mb-6 font-serif text-4xl font-semibold leading-tight text-foreground">
-                Why {destination.name}?
+              <h2 className="mb-6 font-serif text-4xl font-semibold leading-tight text-white">
+                Why{" "}
+                <span
+                  className="font-light italic"
+                  style={{
+                    background: "linear-gradient(90deg,#c084fc,#fbbf24)",
+                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                  }}
+                >
+                  {destination.name}?
+                </span>
               </h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                {destination.description}
-              </p>
+              <p className="text-base leading-relaxed text-white/55">{destination.description}</p>
             </div>
 
             {/* Highlights */}
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+              <p
+                className="mb-3 text-xs font-semibold uppercase tracking-[0.30em]"
+                style={{
+                  background: "linear-gradient(90deg,#c084fc,#fbbf24)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}
+              >
                 What&apos;s included
               </p>
-              <h2 className="mb-8 font-serif text-4xl font-semibold leading-tight text-foreground">
+              <h2 className="mb-8 font-serif text-4xl font-semibold leading-tight text-white">
                 Trip highlights
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {destination.highlights.map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-md"
-                  >
-                    <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <CheckCircle2 className="size-4 text-primary" />
+                {destination.highlights.map((h, i) => {
+                  const c = HIGHLIGHT_COLORS[i % HIGHLIGHT_COLORS.length]
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-start gap-4 rounded-2xl border p-5 transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+                      style={{ background: c.bg, borderColor: c.border, boxShadow: `0 4px 20px ${c.glow}` }}
+                    >
+                      <div
+                        className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl"
+                        style={{ background: `${c.color}20`, border: `1px solid ${c.border}` }}
+                      >
+                        <CheckCircle2 className="size-4" style={{ color: c.color }} />
+                      </div>
+                      <p className="text-sm leading-relaxed text-white/75">{h}</p>
                     </div>
-                    <p className="text-sm leading-relaxed text-foreground">{h}</p>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
             {/* Promise strip */}
             <div
-              className="rounded-3xl px-8 py-10 text-white"
-              style={{
-                background:
-                  "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
-              }}
+              className="relative overflow-hidden rounded-3xl px-8 py-10 text-white"
+              style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)" }}
             >
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-white/55">
-                The Wanderlight promise
-              </p>
-              <h3 className="mb-8 font-serif text-2xl font-semibold">
-                You&apos;re in safe hands
-              </h3>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                {[
-                  {
-                    icon: Shield,
-                    title: "24/7 Support",
-                    desc: "Our experts are available around the clock throughout your journey.",
-                  },
-                  {
-                    icon: Users,
-                    title: "Personal curator",
-                    desc: "A dedicated travel expert designs and manages your entire trip.",
-                  },
-                  {
-                    icon: HeartHandshake,
-                    title: "Best price guarantee",
-                    desc: "We match or beat any comparable itinerary — no hidden fees.",
-                  },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex flex-col gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-full bg-white/15">
-                      <Icon className="size-4 text-white" />
+              {/* Subtle shimmer */}
+              <div
+                className="pointer-events-none absolute inset-0 rounded-3xl opacity-20"
+                style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,255,255,0.25), transparent)" }}
+              />
+              <div className="relative">
+                <div className="mb-2 flex items-center gap-2">
+                  <Sparkles className="size-4 text-amber-300/70" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/55">
+                    The Wanderlight promise
+                  </p>
+                </div>
+                <h3 className="mb-8 font-serif text-2xl font-semibold">You&apos;re in safe hands</h3>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                  {[
+                    { icon: Shield,        title: "24/7 Support",        desc: "Our experts are available around the clock throughout your journey." },
+                    { icon: Users,         title: "Personal curator",    desc: "A dedicated travel expert designs and manages your entire trip." },
+                    { icon: HeartHandshake,title: "Best price guarantee",desc: "We match or beat any comparable itinerary — no hidden fees." },
+                  ].map(({ icon: Icon, title, desc }) => (
+                    <div key={title} className="flex flex-col gap-3">
+                      <div className="flex size-9 items-center justify-center rounded-full bg-white/15">
+                        <Icon className="size-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{title}</p>
+                        <p className="mt-1 text-xs leading-relaxed text-white/60">{desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-white">{title}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-white/65">{desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right: sticky enquiry form */}
+          {/* ── Right: sticky enquiry form ── */}
           <div>
             <div className="sticky top-28">
               {!submitted ? (
-                <div className="rounded-3xl border border-border bg-card p-7 shadow-xl">
+                <div
+                  className="rounded-3xl border border-white/10 p-7 shadow-2xl"
+                  style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)" }}
+                >
                   <div className="mb-6">
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+                    <p
+                      className="mb-1 text-xs font-semibold uppercase tracking-[0.28em]"
+                      style={{
+                        background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                      }}
+                    >
                       Book this trip
                     </p>
-                    <h3 className="font-serif text-2xl font-semibold text-foreground">
-                      Enquire now
-                    </h3>
-                    <p className="mt-1.5 text-sm text-muted-foreground">
+                    <h3 className="font-serif text-2xl font-semibold text-white">Enquire now</h3>
+                    <p className="mt-1.5 text-sm text-white/45">
                       We respond within 24 hours with a personalised plan.
                     </p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                        Full name *
-                      </label>
-                      <input
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your name"
-                        className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                      />
+                      <label className="mb-1.5 block text-xs font-medium text-white/45">Full name *</label>
+                      <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className={inputCls} />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                        Email address *
-                      </label>
-                      <input
-                        required
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@email.com"
-                        className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                      />
+                      <label className="mb-1.5 block text-xs font-medium text-white/45">Email address *</label>
+                      <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" className={inputCls} />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                        Phone (optional)
-                      </label>
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                      />
+                      <label className="mb-1.5 block text-xs font-medium text-white/45">Phone (optional)</label>
+                      <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 98765 43210" className={inputCls} />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                          Travel date
-                        </label>
-                        <input
-                          type="date"
-                          value={date}
-                          onChange={(e) => setDate(e.target.value)}
-                          min={today}
-                          className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                        />
+                        <label className="mb-1.5 block text-xs font-medium text-white/45">Travel date</label>
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} min={today} className={inputCls} />
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                          Travelers
-                        </label>
-                        <select
-                          value={guests}
-                          onChange={(e) => setGuests(e.target.value)}
-                          className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                        >
-                          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-                            <option key={n} value={n}>
-                              {n} {n === 1 ? "person" : "people"}
-                            </option>
+                        <label className="mb-1.5 block text-xs font-medium text-white/45">Travelers</label>
+                        <select value={guests} onChange={(e) => setGuests(e.target.value)} className={inputCls}>
+                          {[1,2,3,4,5,6,7,8].map((n) => (
+                            <option key={n} value={n}>{n} {n === 1 ? "person" : "people"}</option>
                           ))}
                         </select>
                       </div>
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                        Special requests (optional)
-                      </label>
-                      <textarea
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        rows={3}
+                      <label className="mb-1.5 block text-xs font-medium text-white/45">Special requests (optional)</label>
+                      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
                         placeholder="Anniversaries, dietary needs, dream experiences…"
-                        className="w-full resize-none rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                        className={`${inputCls} resize-none`}
                       />
                     </div>
 
                     {/* Price summary */}
-                    <div className="rounded-xl bg-secondary px-4 py-3">
+                    <div
+                      className="rounded-2xl border border-amber-400/20 px-4 py-3"
+                      style={{ background: "rgba(251,191,36,0.07)" }}
+                    >
                       <div className="flex items-baseline justify-between">
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-white/40">
                           {destination.name} · {guests} {Number(guests) === 1 ? "person" : "people"}
                         </span>
-                        <span className="font-serif text-lg font-semibold text-foreground">
+                        <span
+                          className="font-serif text-lg font-semibold"
+                          style={{
+                            background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                          }}
+                        >
                           {destination.price}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-xs text-muted-foreground/70">Starting price per person</p>
+                      <p className="mt-0.5 text-xs text-white/30">Starting price per person</p>
                     </div>
 
                     {error && (
-                      <p className="rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                        {error}
-                      </p>
+                      <p className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</p>
                     )}
 
                     <button
-                      type="submit"
-                      disabled={loading}
-                      className="mt-1 w-full rounded-full py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:shadow-lg active:scale-95 disabled:opacity-60"
+                      type="submit" disabled={loading}
+                      className="mt-1 w-full rounded-full py-4 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60"
                       style={{
-                        background:
-                          "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
+                        background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)",
+                        boxShadow: "0 8px 32px rgba(124,63,150,0.40)",
                       }}
                     >
                       {loading ? (
                         <span className="flex items-center justify-center gap-2">
                           <Loader2 className="size-4 animate-spin" /> Sending…
                         </span>
-                      ) : (
-                        "Send enquiry"
-                      )}
+                      ) : "Send enquiry →"}
                     </button>
                   </form>
                 </div>
               ) : (
-                <div className="rounded-3xl border border-border bg-card p-8 text-center shadow-xl">
+                <div
+                  className="rounded-3xl border border-white/10 p-8 text-center"
+                  style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)" }}
+                >
                   <div
-                    className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full"
+                    className="mx-auto mb-5 flex size-20 items-center justify-center rounded-full"
                     style={{
-                      background:
-                        "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
+                      background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)",
+                      boxShadow: "0 8px 40px rgba(124,63,150,0.50)",
                     }}
                   >
-                    <CheckCircle2 className="size-8 text-white" />
+                    <CheckCircle2 className="size-10 text-white" />
                   </div>
-                  <h3 className="mb-2 font-serif text-2xl font-semibold text-foreground">
-                    Enquiry sent!
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="mb-2 font-serif text-2xl font-semibold text-white">Enquiry sent!</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">
                     We&apos;ll reach out within 24 hours to start crafting your perfect trip to{" "}
-                    <strong className="text-foreground">{destination.name}</strong>.
+                    <strong className="text-white">{destination.name}</strong>.
                   </p>
                   <Link
-                    href="/#destinations"
-                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                    href="/destinations"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-2.5 text-sm font-medium text-white/65 transition-all hover:bg-white/10 hover:text-white"
                   >
-                    <ArrowLeft className="size-4" />
-                    Explore more destinations
+                    <ArrowLeft className="size-4" /> Explore more destinations
                   </Link>
                 </div>
               )}
@@ -456,7 +482,6 @@ export default function DestinationPage() {
       </div>
 
       <SiteFooter onContactOpen={() => setContactOpen(true)} />
-      {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
       {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
     </div>
   )
