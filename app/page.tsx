@@ -8,12 +8,10 @@ import { FeatureSection } from "@/components/feature-section"
 import { Testimonials } from "@/components/testimonials"
 import { Newsletter } from "@/components/newsletter"
 import { SiteFooter } from "@/components/site-footer"
-import { BookingModal } from "@/components/booking-modal"
 import { ContactModal } from "@/components/contact-modal"
 
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [bookingOpen, setBookingOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
 
   function handleSearch(query: string) {
@@ -25,15 +23,14 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader onBookingOpen={() => setBookingOpen(true)} />
+      <SiteHeader onBookingOpen={() => {}} />
       <Hero onSearch={handleSearch} />
       <Destinations searchQuery={searchQuery} />
-      <FeatureSection onBookingOpen={() => setBookingOpen(true)} />
+      <FeatureSection />
       <Testimonials />
       <Newsletter />
       <SiteFooter onContactOpen={() => setContactOpen(true)} />
 
-      {bookingOpen && <BookingModal onClose={() => setBookingOpen(false)} />}
       {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
     </main>
   )

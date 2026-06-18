@@ -344,7 +344,7 @@ export function Destinations({ searchQuery = "" }: Props) {
   }
 
   return (
-    <section id="destinations" className="overflow-hidden py-24">
+    <section id="destinations" className="overflow-hidden py-16 sm:py-24">
       {/* Header + filters */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div>
@@ -439,9 +439,9 @@ export function Destinations({ searchQuery = "" }: Props) {
               <article
                 key={d.name}
                 onClick={() => goToDestination(d)}
-                className="group relative w-72 flex-none cursor-pointer snap-start overflow-hidden rounded-3xl sm:w-80 lg:w-96"
+                className="group relative w-64 flex-none cursor-pointer snap-start overflow-hidden rounded-3xl sm:w-80 lg:w-96"
               >
-                <div className="relative h-80 sm:h-[420px]">
+                <div className="relative h-72 sm:h-[420px]">
                   <Image
                     src={d.image || "/placeholder.svg"}
                     alt={`${d.name}, ${d.country}`}

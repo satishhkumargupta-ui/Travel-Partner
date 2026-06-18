@@ -132,7 +132,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
       }`}
       style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, transparent 100%)" }}
     >
-      <nav className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-4 lg:px-8">
+      <nav className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 lg:px-8">
 
         {/* Logo */}
         <Link
@@ -140,7 +140,7 @@ export function SiteHeader({ onBookingOpen }: Props) {
           onClick={() => { setActiveTab(""); closeSearch() }}
           className="flex shrink-0 items-center text-white transition-opacity duration-300 hover:opacity-80"
         >
-          <WanderlightLogo className="h-20 w-auto" />
+          <WanderlightLogo className="h-12 w-auto sm:h-16 lg:h-20" />
         </Link>
 
         {/* Desktop centre: nav links ↔ search */}
@@ -397,7 +397,10 @@ export function SiteHeader({ onBookingOpen }: Props) {
 
       {/* Mobile nav menu */}
       {open && (
-        <div className="mx-4 mb-3 rounded-2xl border border-border bg-card/95 p-5 shadow-2xl backdrop-blur-lg md:hidden">
+        <div
+          className="mx-4 mb-3 rounded-2xl border border-white/12 p-5 shadow-2xl md:hidden"
+          style={{ background: "rgba(13,11,30,0.96)", backdropFilter: "blur(24px)" }}
+        >
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => {
               const active = isActive(link.href)
@@ -406,28 +409,29 @@ export function SiteHeader({ onBookingOpen }: Props) {
                   key={link.label}
                   href={link.href}
                   onClick={() => { setOpen(false); handleNavClick(link.href) }}
-                  className={`group relative flex items-center overflow-hidden rounded-xl px-4 py-3 text-sm transition-all duration-200 ${
-                    active ? "font-semibold text-amber-600" : "font-medium text-foreground hover:text-amber-600"
+                  className={`group relative flex items-center overflow-hidden rounded-xl px-4 py-3.5 text-sm transition-all duration-200 ${
+                    active ? "font-semibold text-amber-400" : "font-medium text-white/80 hover:text-amber-400"
                   }`}
                   style={active ? {
-                    background: "linear-gradient(135deg, rgba(251,191,36,0.10) 0%, rgba(232,144,42,0.06) 100%)",
-                    boxShadow: "inset 3px 0 0 #fbbf24, 0 0 0 1px rgba(251,191,36,0.15)",
+                    background: "linear-gradient(135deg, rgba(251,191,36,0.12) 0%, rgba(232,144,42,0.08) 100%)",
+                    boxShadow: "inset 3px 0 0 #fbbf24, 0 0 0 1px rgba(251,191,36,0.18)",
                   } : undefined}
                 >
                   {!active && (
                     <span
                       className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                      style={{ background: "linear-gradient(135deg, rgba(251,191,36,0.07) 0%, rgba(124,63,150,0.04) 100%)" }}
+                      style={{ background: "linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(124,63,150,0.05) 100%)" }}
                     />
                   )}
                   <span className="relative z-10">{link.label}</span>
                 </Link>
               )
             })}
+            <div className="my-2 h-px bg-white/8" />
             <Link
               href="/plan"
               onClick={() => setOpen(false)}
-              className="mt-3 block w-full rounded-full py-3 text-center text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90"
+              className="block w-full rounded-full py-3.5 text-center text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90 active:scale-95"
               style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)" }}
             >
               Plan a trip

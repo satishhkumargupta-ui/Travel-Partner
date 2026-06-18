@@ -34,23 +34,26 @@ type Props = { onContactOpen: () => void }
 
 export function SiteFooter({ onContactOpen }: Props) {
   return (
-    <footer className="border-t border-border/50 bg-background">
+    <footer
+      className="relative border-t border-white/8"
+      style={{ background: "linear-gradient(140deg,#0a0818 0%,#160d2a 50%,#0d0b1e 100%)" }}
+    >
       {/* Thin gradient accent line at top */}
       <div
         className="h-px w-full"
         style={{ background: "linear-gradient(90deg, transparent, #7c3f96 40%, #e8902a 60%, transparent)" }}
       />
 
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        {/* Main grid */}
-        <div className="grid grid-cols-2 gap-12 md:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+        {/* Main grid — 1 col on mobile, 2 on sm, 5 on md */}
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-5 md:gap-12">
 
           {/* Brand column */}
-          <div className="col-span-2">
-            <a href="/" className="inline-flex items-center text-foreground">
-              <WanderlightLogo className="h-14 w-auto text-primary" />
+          <div className="col-span-2 sm:col-span-3 md:col-span-2">
+            <a href="/" className="inline-flex items-center">
+              <WanderlightLogo className="h-12 w-auto lg:h-14" />
             </a>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground/80">
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/45">
               Curated journeys to the world&apos;s most extraordinary places,
               designed around the way you love to travel.
             </p>
@@ -62,7 +65,7 @@ export function SiteFooter({ onContactOpen }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow us on Instagram"
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.15)", color: "inherit", textDecoration: "none" }}
+                className="flex size-9 items-center justify-center rounded-full border border-white/15 text-white/50 transition-all hover:border-amber-400/40 hover:text-white"
               >
                 <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -76,7 +79,7 @@ export function SiteFooter({ onContactOpen }: Props) {
           {/* Link columns */}
           {columns.map((col) => (
             <div key={col.title}>
-              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
                 {col.title}
               </h3>
               <ul className="mt-5 flex flex-col gap-3">
@@ -85,14 +88,14 @@ export function SiteFooter({ onContactOpen }: Props) {
                     {"isContact" in link && link.isContact ? (
                       <button
                         onClick={onContactOpen}
-                        className="text-sm text-muted-foreground/75 transition-colors hover:text-foreground"
+                        className="text-sm text-white/40 transition-colors hover:text-white/80"
                       >
                         {link.label}
                       </button>
                     ) : (
                       <a
                         href={link.href}
-                        className="text-sm text-muted-foreground/75 transition-colors hover:text-foreground"
+                        className="text-sm text-white/40 transition-colors hover:text-white/80"
                       >
                         {link.label}
                       </a>
@@ -105,11 +108,11 @@ export function SiteFooter({ onContactOpen }: Props) {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-border/40 pt-8 sm:flex-row">
-          <p className="text-xs text-muted-foreground/60">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-8 sm:flex-row">
+          <p className="text-xs text-white/30">
             &copy; {new Date().getFullYear()} Wanderlight. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground/40 tracking-wide">
+          <p className="text-xs text-white/20 tracking-wide">
             Crafted with care for curious travellers.
           </p>
         </div>

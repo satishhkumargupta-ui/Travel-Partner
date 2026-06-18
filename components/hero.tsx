@@ -124,7 +124,7 @@ export function Hero({ onSearch }: Props) {
 
       {/* ── Main content — anchored to bottom ── */}
       <div
-        className="relative flex min-h-screen flex-col justify-end pb-16 lg:pb-20"
+        className="relative flex min-h-screen flex-col justify-end pb-10 sm:pb-16 lg:pb-20"
         style={{ animation: "fadeSlideUp 1s cubic-bezier(.22,.68,0,1.2) 0.1s both" }}
       >
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
@@ -144,20 +144,20 @@ export function Hero({ onSearch }: Props) {
           <h1 className="max-w-4xl font-serif font-semibold leading-[0.93] text-white">
             <span
               className="block drop-shadow-2xl"
-              style={{ fontSize: "clamp(2.8rem, 7.5vw, 7.5rem)", letterSpacing: "-0.02em" }}
+              style={{ fontSize: "clamp(2.4rem, 7.5vw, 7.5rem)", letterSpacing: "-0.02em" }}
             >
               Travel beyond
             </span>
             <span
               className="block italic font-light text-white/65 drop-shadow-2xl"
-              style={{ fontSize: "clamp(2.8rem, 7.5vw, 7.5rem)", letterSpacing: "-0.02em" }}
+              style={{ fontSize: "clamp(2.4rem, 7.5vw, 7.5rem)", letterSpacing: "-0.02em" }}
             >
               the ordinary.
             </span>
           </h1>
 
           {/* Sub-headline */}
-          <p className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-white/65 drop-shadow sm:text-lg">
+          <p className="mt-6 max-w-xl text-pretty text-sm leading-relaxed text-white/65 drop-shadow sm:mt-8 sm:text-base lg:text-lg">
             Handcrafted itineraries, vetted local experts, and moments you&apos;ll carry
             long after you return home.
           </p>
@@ -223,7 +223,7 @@ export function Hero({ onSearch }: Props) {
           </div>
 
           {/* ── Stats + quick info ── */}
-          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5 lg:gap-x-12">
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 lg:mt-12 lg:gap-x-12">
             {[
               { value: "120+", label: "Destinations" },
               { value: "45k",  label: "Happy travellers" },

@@ -134,7 +134,7 @@ export default function DestinationPage() {
           style={{ background: "linear-gradient(90deg,transparent,#7c3f96 40%,#e8902a 60%,transparent)" }} />
 
         {/* Breadcrumb — top left */}
-        <nav aria-label="Breadcrumb" className="absolute left-6 top-24 lg:left-8">
+        <nav aria-label="Breadcrumb" className="absolute left-5 top-20 sm:left-6 sm:top-24 lg:left-8">
           <ol className="flex items-center gap-1.5 text-xs text-white/50">
             <li><Link href="/" className="transition-colors hover:text-white">Home</Link></li>
             <li className="text-white/25">/</li>
@@ -145,7 +145,7 @@ export default function DestinationPage() {
         </nav>
 
         {/* Hero content — bottom anchored */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-14 lg:px-8 lg:pb-20">
+        <div className="absolute bottom-0 left-0 right-0 px-5 pb-10 sm:px-6 sm:pb-14 lg:px-8 lg:pb-20">
           <div className="mx-auto max-w-7xl">
             {/* Tag + rating */}
             <div className="mb-5 flex flex-wrap items-center gap-3">

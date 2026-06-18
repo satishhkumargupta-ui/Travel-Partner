@@ -61,7 +61,7 @@ export function ContactModal({ onClose }: Props) {
       </div>
 
       {/* Main content */}
-      <div className="relative flex flex-1 items-center justify-center px-6 pb-12">
+      <div className="relative flex flex-1 items-start justify-center px-4 pb-10 sm:items-center sm:px-6 sm:pb-12">
         <div className="w-full max-w-4xl">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
@@ -150,8 +150,8 @@ export function ContactModal({ onClose }: Props) {
                 >
                   Get in touch
                 </p>
-                <h3 className="font-serif text-4xl font-semibold text-white leading-tight">
-                  Let&apos;s plan your<br />
+                <h3 className="font-serif text-3xl font-semibold text-white leading-tight sm:text-4xl">
+                  Let&apos;s plan your{" "}
                   <span
                     className="font-light italic"
                     style={{

@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Compass, ShieldCheck, HeartHandshake } from "lucide-react"
 
 const features = [
@@ -36,9 +37,7 @@ const features = [
   },
 ]
 
-type Props = { onBookingOpen: () => void }
-
-export function FeatureSection({ onBookingOpen }: Props) {
+export function FeatureSection() {
   return (
     <section
       id="journeys"
@@ -61,7 +60,7 @@ export function FeatureSection({ onBookingOpen }: Props) {
         />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 lg:grid-cols-2 lg:px-8">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 py-16 sm:px-6 sm:gap-14 sm:py-24 lg:grid-cols-2 lg:px-8">
 
         {/* Image with glowing gradient frame */}
         <div className="relative">
@@ -155,16 +154,16 @@ export function FeatureSection({ onBookingOpen }: Props) {
           </ul>
 
           {/* CTA */}
-          <button
-            onClick={onBookingOpen}
-            className="mt-10 rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:opacity-90 hover:shadow-xl active:scale-95"
+          <Link
+            href="/plan"
+            className="mt-10 inline-block rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:opacity-90 hover:shadow-xl active:scale-95"
             style={{
               background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)",
               boxShadow: "0 4px 24px rgba(124,63,150,0.40)",
             }}
           >
             Start planning your journey
-          </button>
+          </Link>
         </div>
       </div>
     </section>

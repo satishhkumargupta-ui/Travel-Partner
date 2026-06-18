@@ -71,7 +71,7 @@ export default function DestinationsPage() {
       </div>
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden pb-14 pt-36">
+      <section className="relative overflow-hidden pb-10 pt-28 sm:pb-14 sm:pt-36">
         <div className="absolute inset-x-0 top-0 h-px"
           style={{ background: "linear-gradient(90deg,transparent,#7c3f96 40%,#e8902a 60%,transparent)" }} />
 
@@ -83,7 +83,7 @@ export default function DestinationsPage() {
             <ArrowLeft className="size-4" /> Back to home
           </Link>
 
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <p
                 className="mb-3 text-xs font-semibold uppercase tracking-[0.42em]"

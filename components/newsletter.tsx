@@ -8,9 +8,9 @@ export function Newsletter() {
   const [sent, setSent] = useState(false)
 
   return (
-    <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+    <section className="mx-auto max-w-7xl px-5 pb-16 sm:px-6 sm:pb-24 lg:px-8">
       <div
-        className="relative overflow-hidden rounded-3xl px-6 py-20 text-center text-white sm:px-16"
+        className="relative overflow-hidden rounded-2xl px-5 py-14 text-center text-white sm:rounded-3xl sm:px-16 sm:py-20"
         style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 52%, #e8902a 100%)" }}
       >
         {/* Ambient glow */}

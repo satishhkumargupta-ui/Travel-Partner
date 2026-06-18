@@ -130,7 +130,7 @@ export default function PlanPage() {
       </div>
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden pb-20 pt-36">
+      <section className="relative overflow-hidden pb-14 pt-28 sm:pb-20 sm:pt-36">
         {/* Brand accent line */}
         <div className="absolute inset-x-0 top-0 h-px"
           style={{ background: "linear-gradient(90deg,transparent,#7c3f96 40%,#e8902a 60%,transparent)" }} />
@@ -206,7 +206,7 @@ export default function PlanPage() {
               {(() => {
                 const s = STEPS[0]
                 return (
-                  <div className="rounded-3xl border p-8 transition-all duration-300 hover:brightness-105"
+                  <div className="rounded-3xl border p-5 transition-all duration-300 hover:brightness-105 sm:p-8"
                     style={{ background: s.bg, borderColor: s.border, boxShadow: `0 4px 40px ${s.glow}` }}>
                     <div className="mb-7 flex items-center gap-4">
                       <div
@@ -258,7 +258,7 @@ export default function PlanPage() {
               {(() => {
                 const s = STEPS[1]
                 return (
-                  <div className="rounded-3xl border p-8 transition-all duration-300 hover:brightness-105"
+                  <div className="rounded-3xl border p-5 transition-all duration-300 hover:brightness-105 sm:p-8"
                     style={{ background: s.bg, borderColor: s.border, boxShadow: `0 4px 40px ${s.glow}` }}>
                     <div className="mb-7 flex items-center gap-4">
                       <div
@@ -326,7 +326,7 @@ export default function PlanPage() {
               {(() => {
                 const s = STEPS[2]
                 return (
-                  <div className="rounded-3xl border p-8 transition-all duration-300 hover:brightness-105"
+                  <div className="rounded-3xl border p-5 transition-all duration-300 hover:brightness-105 sm:p-8"
                     style={{ background: s.bg, borderColor: s.border, boxShadow: `0 4px 40px ${s.glow}` }}>
                     <div className="mb-7 flex items-center gap-4">
                       <div
