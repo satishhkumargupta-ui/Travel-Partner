@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { ArrowUpRight, Star } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Star, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react"
 
 export type Destination = {
   name: string
@@ -146,25 +148,25 @@ export const allDestinations: Destination[] = [
     bestTime: "Mar – Jun, Oct – Dec",
   },
   {
-    name: "Nainital",
+    name: "Kashmir",
     country: "India",
     image: "/images/dest-nainital.jpg",
-    price: "₹28,000",
-    rating: "4.6",
-    tag: "Lake town",
+    price: "₹52,000",
+    rating: "4.9",
+    tag: "Heaven on Earth",
     category: "India",
     description:
-      "Nestled in the Kumaon Himalayas around the emerald Naini Lake, Nainital is one of India's most beloved hill stations — a blend of Victorian charm, serene lakesides, and forested peaks.",
+      "Rightfully called Heaven on Earth, Kashmir enchants with its mirror-still Dal Lake, snow-dusted Himalayan peaks, saffron fields, and the warm hospitality of its people. A destination of breathtaking, soul-stirring beauty.",
     highlights: [
-      "Boat ride on Naini Lake at sunrise",
-      "Naina Devi Temple visit",
-      "Snow View Point by cable car",
-      "Eco Cave Gardens exploration",
-      "Jim Corbett National Park safari",
-      "Khurpatal and Bhimtal day trip",
+      "Shikara ride on Dal Lake at sunrise",
+      "Gulmarg gondola — highest cable car in India",
+      "Pahalgam valley and Betaab Valley walk",
+      "Nishat and Shalimar Mughal Gardens",
+      "Houseboat stay on Dal Lake",
+      "Sonmarg glacier trek and meadow camp",
     ],
-    duration: "3 nights",
-    bestTime: "Mar – Jun, Sep – Nov",
+    duration: "6 nights",
+    bestTime: "Apr – Oct",
   },
   {
     name: "Goa",
@@ -256,11 +258,57 @@ const FILTERS = ["All", "India", "Islands", "Mountains", "Culture"]
 
 type Props = {
   searchQuery?: string
-  onSelectDestination: (d: Destination) => void
 }
 
-export function Destinations({ searchQuery = "", onSelectDestination }: Props) {
+// Smooth cubic-bezier easing (ease-in-out-quart)
+function easeInOutQuart(t: number) {
+  return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
+}
+
+export function Destinations({ searchQuery = "" }: Props) {
   const [activeFilter, setActiveFilter] = useState("All")
+  const [canScrollLeft,  setCanScrollLeft]  = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const animRef   = useRef<number | null>(null)
+  const router    = useRouter()
+
+  // Cancel any in-flight animation on unmount
+  useEffect(() => () => { if (animRef.current) cancelAnimationFrame(animRef.current) }, [])
+
+  function animateScroll(targetX: number, duration = 480) {
+    const el = scrollRef.current
+    if (!el) return
+    if (animRef.current !== null) cancelAnimationFrame(animRef.current)
+
+    const startX  = el.scrollLeft
+    const maxX    = el.scrollWidth - el.clientWidth
+    const endX    = Math.max(0, Math.min(targetX, maxX))
+    const delta   = endX - startX
+    if (Math.abs(delta) < 1) return
+
+    const startTime = performance.now()
+
+    function step(now: number) {
+      const elapsed  = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      el.scrollLeft  = startX + delta * easeInOutQuart(progress)
+      if (progress < 1) {
+        animRef.current = requestAnimationFrame(step)
+      } else {
+        animRef.current = null
+      }
+    }
+
+    animRef.current = requestAnimationFrame(step)
+  }
+
+  function handleFilterChange(f: string) {
+    setActiveFilter(f)
+    animateScroll(0, 300)
+    setCanScrollLeft(false)
+    setCanScrollRight(true)
+  }
 
   const visible = allDestinations.filter((d) => {
     const q = searchQuery.toLowerCase()
@@ -274,112 +322,164 @@ export function Destinations({ searchQuery = "", onSelectDestination }: Props) {
     return matchesSearch && matchesFilter
   })
 
+  function updateScrollState() {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 8)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8)
+  }
+
+  function scrollPrev() {
+    const el = scrollRef.current
+    if (el) animateScroll(el.scrollLeft - 400)
+  }
+
+  function scrollNext() {
+    const el = scrollRef.current
+    if (el) animateScroll(el.scrollLeft + 400)
+  }
+
+  function goToDestination(d: Destination) {
+    router.push(`/destinations/${d.name.toLowerCase().replace(/\s+/g, "-")}`)
+  }
+
   return (
-    <section id="destinations" className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+    <section id="destinations" className="overflow-hidden py-24">
+      {/* Header + filters */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div>
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.25em] text-primary">
             Featured destinations
           </p>
-          <h2 className="max-w-xl text-balance font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-            Places worth the journey
-          </h2>
+          <div className="flex flex-wrap items-end gap-6">
+            <h2 className="text-balance font-serif text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+              Places worth the journey
+            </h2>
+            <Link
+              href="/destinations"
+              className="mb-1 inline-flex items-center gap-1 text-sm font-medium text-primary transition-opacity hover:opacity-70"
+            >
+              View all
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
-        <a
-          href="/#destinations"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-        >
-          View all destinations
-          <ArrowUpRight className="size-4" aria-hidden="true" />
-        </a>
-      </div>
 
-      {/* Filter tabs */}
-      <div className="mt-8 flex flex-wrap gap-2">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            onClick={() => setActiveFilter(f)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-              activeFilter === f
-                ? "bg-primary text-primary-foreground"
-                : "border border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-        {searchQuery && (
-          <span className="rounded-full border border-border bg-muted px-4 py-1.5 text-sm text-muted-foreground">
-            Searching: &ldquo;{searchQuery}&rdquo;
-          </span>
-        )}
-      </div>
-
-      {visible.length === 0 ? (
-        <div className="mt-16 text-center">
-          <p className="font-serif text-2xl text-foreground">No destinations found</p>
-          <p className="mt-2 text-muted-foreground">
-            Try a different search term or filter.
-          </p>
-        </div>
-      ) : (
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((d, i) => (
-            <article
-              key={d.name}
-              onClick={() => onSelectDestination(d)}
-              className={`group relative cursor-pointer overflow-hidden rounded-3xl ${
-                i === 0 && visible.length === allDestinations.length
-                  ? "lg:row-span-2 lg:h-full"
-                  : ""
+        {/* Filter tabs */}
+        <div className="mt-8 flex flex-wrap gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => handleFilterChange(f)}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeFilter === f
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
               }`}
             >
-              <div
-                className={`relative ${
-                  i === 0 && visible.length === allDestinations.length
-                    ? "h-96 lg:h-full"
-                    : "h-72"
-                }`}
+              {f}
+            </button>
+          ))}
+          {searchQuery && (
+            <span className="rounded-full border border-border bg-muted px-4 py-1.5 text-sm text-muted-foreground">
+              Searching: &ldquo;{searchQuery}&rdquo;
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Carousel */}
+      <div className="relative mt-10">
+        {/* Prev arrow — always rendered, fades in/out */}
+        <button
+          onClick={scrollPrev}
+          aria-label="Previous destinations"
+          className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-border bg-background/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:left-4 ${
+            canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none -translate-x-2"
+          }`}
+        >
+          <ChevronLeft className="size-5 text-foreground" />
+        </button>
+
+        {/* Next arrow — always rendered, fades in/out */}
+        <button
+          onClick={scrollNext}
+          aria-label="Next destinations"
+          className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-border bg-background/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:right-4 ${
+            canScrollRight && visible.length > 0 ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none translate-x-2"
+          }`}
+        >
+          <ChevronRight className="size-5 text-foreground" />
+        </button>
+
+        {/* Left fade — smooth opacity transition */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-20 bg-gradient-to-r from-background to-transparent transition-opacity duration-300"
+          style={{ opacity: canScrollLeft ? 1 : 0 }}
+        />
+        {/* Right fade */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-20 bg-gradient-to-l from-background to-transparent" />
+
+        {/* Scroll track — no snap, no scroll-smooth (handled by RAF animation) */}
+        {visible.length === 0 ? (
+          <div className="flex items-center justify-center py-20 text-center">
+            <div>
+              <p className="font-serif text-2xl text-foreground">No destinations found</p>
+              <p className="mt-2 text-muted-foreground">Try a different search term or filter.</p>
+            </div>
+          </div>
+        ) : (
+          <div
+            ref={scrollRef}
+            onScroll={updateScrollState}
+            style={{ WebkitOverflowScrolling: "touch" }}
+            className="flex gap-5 overflow-x-auto px-6 pb-4 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {visible.map((d) => (
+              <article
+                key={d.name}
+                onClick={() => goToDestination(d)}
+                className="group relative w-72 flex-none cursor-pointer snap-start overflow-hidden rounded-3xl sm:w-80 lg:w-96"
               >
-                <Image
-                  src={d.image || "/placeholder.svg"}
-                  alt={`${d.name}, ${d.country}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
+                <div className="relative h-80 sm:h-[420px]">
+                  <Image
+                    src={d.image || "/placeholder.svg"}
+                    alt={`${d.name}, ${d.country}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
 
-                <span className="absolute left-4 top-4 rounded-full bg-card/90 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
-                  {d.tag}
-                </span>
+                  <span className="absolute left-4 top-4 rounded-full bg-card/90 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
+                    {d.tag}
+                  </span>
 
-                {/* Hover CTA */}
-                <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  View details
-                </div>
+                  <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    View details →
+                  </div>
 
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-                  <div>
-                    <h3 className="font-serif text-2xl font-semibold text-background">
-                      {d.name}
-                    </h3>
-                    <p className="text-sm text-background/80">{d.country}</p>
-                    <div className="mt-2 flex items-center gap-1 text-background/90">
-                      <Star className="size-4 fill-current text-accent" aria-hidden="true" />
-                      <span className="text-sm font-medium">{d.rating}</span>
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
+                    <div>
+                      <h3 className="font-serif text-2xl font-semibold text-background">
+                        {d.name}
+                      </h3>
+                      <p className="text-sm text-background/80">{d.country}</p>
+                      <div className="mt-2 flex items-center gap-1 text-background/90">
+                        <Star className="size-4 fill-current text-amber-400" aria-hidden="true" />
+                        <span className="text-sm font-medium">{d.rating}</span>
+                      </div>
+                    </div>
+                    <div className="text-right text-background">
+                      <p className="text-xs text-background/70">from</p>
+                      <p className="font-serif text-xl font-semibold">{d.price}</p>
                     </div>
                   </div>
-                  <div className="text-right text-background">
-                    <p className="text-xs text-background/70">from</p>
-                    <p className="font-serif text-xl font-semibold">{d.price}</p>
-                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   )
 }

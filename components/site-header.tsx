@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
@@ -8,45 +8,48 @@ import { WanderlightLogo } from "@/components/logo"
 
 const navLinks = [
   { label: "Destinations", href: "/#destinations" },
-  { label: "Journeys",     href: "/#journeys" },
-  { label: "About",        href: "/about" },
-  { label: "Stories",      href: "/#stories" },
+  { label: "Journeys",     href: "/#journeys"     },
+  { label: "About",        href: "/about"         },
+  { label: "Stories",      href: "/#stories"      },
 ]
 
 type Props = { onBookingOpen: () => void }
 
 export function SiteHeader({ onBookingOpen }: Props) {
   const [open, setOpen]           = useState(false)
-  const [scrolled, setScrolled]   = useState(false)
+  const [hidden, setHidden]       = useState(false)
   const [activeTab, setActiveTab] = useState("")
   const pathname                  = usePathname()
+  const idleTimer                 = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Scroll detection
+  // Hide while scrolling, show when idle
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 60)
+    const handler = () => {
+      setHidden(true)
+      if (idleTimer.current) clearTimeout(idleTimer.current)
+      idleTimer.current = setTimeout(() => setHidden(false), 500)
+    }
     window.addEventListener("scroll", handler, { passive: true })
-    return () => window.removeEventListener("scroll", handler)
+    return () => {
+      window.removeEventListener("scroll", handler)
+      if (idleTimer.current) clearTimeout(idleTimer.current)
+    }
   }, [])
 
-  // Sync activeTab from the URL hash on mount AND whenever the hash changes
-  // (covers: direct URL load, browser back/forward, Link navigation)
   useEffect(() => {
     const sync = () => {
       if (window.location.pathname === "/" && window.location.hash) {
-        setActiveTab("/" + window.location.hash) // e.g. "/#stories"
+        setActiveTab("/" + window.location.hash)
       }
     }
-    sync() // run on mount
+    sync()
     window.addEventListener("hashchange", sync)
     return () => window.removeEventListener("hashchange", sync)
   }, [])
 
-  // When navigating to a non-home page, clear hash tab selection
   useEffect(() => {
     if (pathname !== "/") setActiveTab("")
   }, [pathname])
-
-  const logoCls = scrolled ? "text-foreground" : "text-white"
 
   function isActive(href: string) {
     if (!href.includes("#")) return pathname === href
@@ -54,25 +57,22 @@ export function SiteHeader({ onBookingOpen }: Props) {
   }
 
   function handleNavClick(href: string) {
-    // Set immediately for instant visual feedback
     setActiveTab(href.includes("#") ? href : "")
   }
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/90 backdrop-blur-lg border-b border-border shadow-sm"
-          : "bg-gradient-to-b from-black/40 to-transparent backdrop-blur-none"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
       }`}
+      style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, transparent 100%)" }}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-8">
 
-        {/* Clicking logo clears hash tab selection */}
         <Link
           href="/"
           onClick={() => setActiveTab("")}
-          className={`flex items-center transition-colors duration-300 ${logoCls}`}
+          className="flex items-center text-white transition-opacity duration-300 hover:opacity-80"
         >
           <WanderlightLogo className="h-20 w-auto" />
         </Link>
@@ -86,21 +86,27 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 key={link.label}
                 href={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className={`group relative px-4 py-2 text-sm tracking-wide transition-colors duration-200 ${
+                className={`group relative px-4 py-2 text-sm tracking-wide transition-all duration-300 hover:-translate-y-px ${
                   active
                     ? "font-semibold text-amber-400"
-                    : scrolled
-                      ? "font-medium text-foreground/70 hover:text-amber-400"
-                      : "font-medium text-white/80 hover:text-amber-400"
+                    : "font-medium text-white/80 hover:text-amber-400"
                 }`}
               >
-                {link.label}
+                {/* Ambient warm glow halo on hover */}
                 <span
-                  className={`absolute bottom-1 left-4 right-4 h-0.5 rounded-full transition-transform duration-200 ${
-                    active
-                      ? "scale-x-100 bg-amber-400"
-                      : "origin-left scale-x-0 bg-current opacity-60 group-hover:scale-x-100"
+                  className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ background: "radial-gradient(ellipse 80% 70% at 50% 100%, rgba(251,191,36,0.13) 0%, transparent 70%)" }}
+                />
+                <span className="relative z-10">{link.label}</span>
+                {/* Gradient underline — pulses when active */}
+                <span
+                  className={`absolute bottom-1 left-4 right-4 h-px rounded-full transition-all duration-300 ${
+                    active ? "scale-x-100" : "origin-left scale-x-0 group-hover:scale-x-100"
                   }`}
+                  style={{
+                    background: "linear-gradient(90deg, #7c3f96, #fbbf24, #e8902a)",
+                    ...(active ? { animation: "luxuryGlow 2.5s ease-in-out infinite" } : {}),
+                  }}
                 />
               </Link>
             )
@@ -109,20 +115,20 @@ export function SiteHeader({ onBookingOpen }: Props) {
 
         {/* CTA */}
         <div className="hidden md:block">
-          <button
-            onClick={onBookingOpen}
+          <Link
+            href="/plan"
             className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:opacity-90 active:scale-95"
             style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)" }}
           >
             Plan a trip
-          </button>
+          </Link>
         </div>
 
         {/* Mobile toggle */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className={`rounded-lg p-1.5 transition-colors duration-200 md:hidden ${logoCls}`}
+          className="rounded-lg p-1.5 text-white transition-colors duration-200 md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -141,26 +147,48 @@ export function SiteHeader({ onBookingOpen }: Props) {
                   key={link.label}
                   href={link.href}
                   onClick={() => { setOpen(false); handleNavClick(link.href) }}
-                  className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                  className={`group relative flex items-center overflow-hidden rounded-xl px-4 py-3 text-sm transition-all duration-200 ${
                     active
-                      ? "bg-amber-50 text-amber-600 font-semibold"
-                      : "text-foreground hover:bg-muted"
+                      ? "font-semibold text-amber-600"
+                      : "font-medium text-foreground hover:text-amber-600"
                   }`}
+                  style={active ? {
+                    background: "linear-gradient(135deg, rgba(251,191,36,0.10) 0%, rgba(232,144,42,0.06) 100%)",
+                    boxShadow: "inset 3px 0 0 #fbbf24, 0 0 0 1px rgba(251,191,36,0.15)",
+                  } : undefined}
                 >
-                  {link.label}
+                  {!active && (
+                    <span
+                      className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                      style={{ background: "linear-gradient(135deg, rgba(251,191,36,0.07) 0%, rgba(124,63,150,0.04) 100%)" }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
                 </Link>
               )
             })}
-            <button
-              onClick={() => { setOpen(false); onBookingOpen() }}
-              className="mt-3 w-full rounded-full py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90"
+            <Link
+              href="/plan"
+              onClick={() => setOpen(false)}
+              className="mt-3 block w-full rounded-full py-3 text-center text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-90"
               style={{ background: "linear-gradient(135deg, #1b1a5e 0%, #7c3f96 50%, #e8902a 100%)" }}
             >
               Plan a trip
-            </button>
+            </Link>
           </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes luxuryGlow {
+          0%, 100% {
+            box-shadow: 0 0 6px rgba(251,191,36,0.55), 0 0 12px rgba(124,63,150,0.30);
+          }
+          50% {
+            box-shadow: 0 0 12px rgba(251,191,36,0.95), 0 0 24px rgba(232,144,42,0.55), 0 0 40px rgba(124,63,150,0.25);
+          }
+        }
+      `}</style>
     </header>
   )
 }
