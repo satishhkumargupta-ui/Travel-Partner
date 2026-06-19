@@ -35,7 +35,7 @@ export function ChatWidget() {
   const [typing, setTyping] = useState(false)
 
   const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef  = useRef<HTMLInputElement>(null)
+  const inputRef  = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -199,14 +199,27 @@ export function ChatWidget() {
           <div className="shrink-0 border-t border-white/8 px-4 py-3">
             <form
               onSubmit={(e) => { e.preventDefault(); send(input) }}
-              className="flex items-center gap-2 rounded-full border border-white/12 bg-white/5 px-4 py-2.5 transition-all focus-within:border-white/25 focus-within:bg-white/8"
+              className="flex items-end gap-2 rounded-2xl border border-white/12 bg-white/5 px-4 py-2.5 transition-all focus-within:border-white/25 focus-within:bg-white/8"
             >
-              <input
+              <textarea
                 ref={inputRef}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                rows={1}
+                onChange={(e) => {
+                  setInput(e.target.value)
+                  e.target.style.height = "auto"
+                  e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px"
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    send(input)
+                    if (inputRef.current) inputRef.current.style.height = "auto"
+                  }
+                }}
                 placeholder="Ask me anything…"
-                className="flex-1 bg-transparent text-sm text-white placeholder:text-white/30 focus:outline-none"
+                className="flex-1 resize-none bg-transparent text-sm text-white placeholder:text-white/30 focus:outline-none leading-5"
+                style={{ maxHeight: "120px", overflowY: "auto" }}
               />
               <button
                 type="submit"
