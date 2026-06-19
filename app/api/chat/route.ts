@@ -63,12 +63,12 @@ const RESPOND_TOOL: OpenAI.Chat.Completions.ChatCompletionTool = {
 type ChatMsg = { from: "bot" | "user"; text: string }
 
 export async function POST(req: NextRequest) {
-  const client = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY,
-    baseURL: "https://api.groq.com/openai/v1",
-  })
-
   try {
+    const client = new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
+    })
+
     const { messages }: { messages: ChatMsg[] } = await req.json()
 
     const history = messages.slice(-20)
