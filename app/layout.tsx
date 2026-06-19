@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
+import { ChatWidget } from '@/components/chat-widget'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -56,6 +57,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
+        <ChatWidget />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

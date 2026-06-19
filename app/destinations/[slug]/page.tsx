@@ -113,7 +113,7 @@ export default function DestinationPage() {
       </div>
 
       {/* ── Cinematic Hero ── */}
-      <section className="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
+      <section className="relative h-[88vh] min-h-[620px] w-full overflow-hidden">
         <Image
           src={destination.image}
           alt={`${destination.name}, ${destination.country}`}
@@ -121,34 +121,32 @@ export default function DestinationPage() {
           className="object-cover"
           sizes="100vw"
         />
-        {/* Multi-layer overlays for depth — pointer-events-none so links beneath stay clickable */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/15" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/92 via-black/30 to-black/10" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/65 via-transparent to-transparent" />
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(ellipse 80% 60% at 15% 90%, rgba(124,63,150,0.30) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(ellipse 80% 60% at 15% 90%, rgba(124,63,150,0.28) 0%, transparent 60%)" }}
         />
-
-        {/* Brand accent top line */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{ background: "linear-gradient(90deg,transparent,#7c3f96 40%,#e8902a 60%,transparent)" }} />
 
-        {/* Breadcrumb — top left */}
+        {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="absolute left-5 top-20 sm:left-6 sm:top-24 lg:left-8">
-          <ol className="flex items-center gap-1.5 text-xs text-white/50">
+          <ol className="flex items-center gap-1.5 text-xs text-white/45">
             <li><Link href="/" className="transition-colors hover:text-white">Home</Link></li>
-            <li className="text-white/25">/</li>
+            <li className="text-white/20">/</li>
             <li><Link href="/destinations" className="transition-colors hover:text-white">Destinations</Link></li>
-            <li className="text-white/25">/</li>
-            <li className="text-white/80">{destination.name}</li>
+            <li className="text-white/20">/</li>
+            <li className="text-white/70">{destination.name}</li>
           </ol>
         </nav>
 
-        {/* Hero content — bottom anchored */}
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-10 sm:px-6 sm:pb-14 lg:px-8 lg:pb-20">
+        {/* Hero content */}
+        <div className="absolute bottom-0 left-0 right-0 px-5 pb-14 sm:px-6 sm:pb-20 lg:px-8 lg:pb-28">
           <div className="mx-auto max-w-7xl">
+
             {/* Tag + rating */}
-            <div className="mb-5 flex flex-wrap items-center gap-3">
+            <div className="mb-6 flex flex-wrap items-center gap-3">
               <span
                 className="rounded-full px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-md"
                 style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.20)" }}
@@ -156,7 +154,7 @@ export default function DestinationPage() {
                 {destination.tag}
               </span>
               <div
-                className="flex items-center gap-2 rounded-full px-3 py-1.5 backdrop-blur-md"
+                className="flex items-center gap-2 rounded-full px-3.5 py-1.5 backdrop-blur-md"
                 style={{ background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.30)" }}
               >
                 <Star className="size-3.5 fill-current text-amber-400" />
@@ -168,72 +166,83 @@ export default function DestinationPage() {
             {/* Destination name */}
             <h1
               className="font-serif font-semibold leading-none tracking-tight text-white drop-shadow-2xl"
-              style={{ fontSize: "clamp(3rem,8vw,7rem)" }}
+              style={{ fontSize: "clamp(3.5rem,9vw,8rem)" }}
             >
               {destination.name}
             </h1>
 
-            {/* Country + duration */}
-            <div className="mt-4 flex flex-wrap items-center gap-5">
+            {/* Country + meta */}
+            <div className="mt-6 flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <MapPin className="size-5 text-amber-400" />
-                <span className="text-xl font-light text-white/75">{destination.country}</span>
+                <span className="text-lg font-light text-white/80">{destination.country}</span>
               </div>
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex items-center gap-2">
-                <Clock className="size-4 text-white/45" />
-                <span className="text-sm text-white/55">{destination.duration}</span>
+              <div className="h-4 w-px bg-white/18" />
+              <div className="flex items-center gap-2 text-white/50">
+                <Clock className="size-4" />
+                <span className="text-sm">{destination.duration}</span>
               </div>
-              <div className="h-4 w-px bg-white/20" />
-              <div className="flex items-center gap-2">
-                <Calendar className="size-4 text-white/45" />
-                <span className="text-sm text-white/55">Best: {destination.bestTime}</span>
+              <div className="h-4 w-px bg-white/18" />
+              <div className="flex items-center gap-2 text-white/50">
+                <Calendar className="size-4" />
+                <span className="text-sm">Best: {destination.bestTime}</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats strip ── */}
+      {/* ── Stats strip — spacious 4-card grid ── */}
       <div
         className="border-b border-white/8 backdrop-blur-xl"
-        style={{ background: "rgba(255,255,255,0.04)" }}
+        style={{ background: "rgba(255,255,255,0.03)" }}
       >
-        <div className="mx-auto max-w-7xl px-5 py-5 lg:px-8">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-4 sm:flex sm:items-center sm:gap-8">
+        <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
             {[
-              { icon: Clock,    label: "Duration",     value: destination.duration,            color: "#fbbf24" },
-              { icon: Calendar, label: "Best time",    value: destination.bestTime,            color: "#c084fc" },
-              { icon: Star,     label: "Guest rating", value: `${destination.rating} / 5.0`,  color: "#34d399" },
-            ].map(({ icon: Icon, label, value, color }, i) => (
-              <div key={label} className="flex items-center gap-3">
-                {i > 0 && <div className="mr-5 hidden h-8 w-px bg-white/10 sm:block" />}
+              { icon: Clock,    label: "Duration",     value: destination.duration,           color: "#fbbf24" },
+              { icon: Calendar, label: "Best time",    value: destination.bestTime,           color: "#c084fc" },
+              { icon: Star,     label: "Guest rating", value: `${destination.rating} / 5.0`, color: "#34d399" },
+            ].map(({ icon: Icon, label, value, color }) => (
+              <div
+                key={label}
+                className="flex items-center gap-4 rounded-2xl border border-white/8 px-5 py-5"
+                style={{ background: "rgba(255,255,255,0.04)" }}
+              >
                 <div
-                  className="flex size-9 shrink-0 items-center justify-center rounded-xl"
-                  style={{ background: `${color}14`, border: `1px solid ${color}28` }}
+                  className="flex size-11 shrink-0 items-center justify-center rounded-xl"
+                  style={{ background: `${color}16`, border: `1px solid ${color}30` }}
                 >
-                  <Icon className="size-4" style={{ color }} />
+                  <Icon className="size-5" style={{ color }} />
                 </div>
                 <div>
-                  <p className="text-xs text-white/35">{label}</p>
+                  <p className="text-xs text-white/35 mb-0.5">{label}</p>
                   <p className="text-sm font-semibold text-white">{value}</p>
                 </div>
               </div>
             ))}
 
-            <div className="col-span-2 border-t border-white/8 pt-4 sm:ml-auto sm:border-none sm:pt-0 sm:pl-8">
+            {/* Price card */}
+            <div
+              className="col-span-2 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/20 px-6 py-5 lg:col-span-1 lg:flex-col lg:items-start lg:justify-center"
+              style={{ background: "rgba(251,191,36,0.06)" }}
+            >
               <p className="text-xs text-white/35">Starting from</p>
               <p
-                className="font-serif font-semibold leading-none"
+                className="font-serif font-bold leading-none"
                 style={{
-                  fontSize: "clamp(1.5rem,3vw,2.2rem)",
+                  fontSize: "clamp(1.6rem,3vw,2rem)",
                   background: "linear-gradient(90deg,#fbbf24,#e8902a)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
                 }}
               >
                 {destination.price}
-                <span className="ml-1.5 font-sans text-sm font-normal text-white/35"
-                  style={{ WebkitTextFillColor: "rgba(255,255,255,0.35)" }}>/ person</span>
+                <span
+                  className="ml-1.5 font-sans text-xs font-normal"
+                  style={{ WebkitTextFillColor: "rgba(255,255,255,0.35)" }}
+                >
+                  / person
+                </span>
               </p>
             </div>
           </div>
@@ -241,16 +250,16 @@ export default function DestinationPage() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 gap-12 sm:gap-16 lg:grid-cols-[1fr_400px]">
+      <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28">
+        <div className="grid grid-cols-1 gap-16 sm:gap-20 lg:grid-cols-[1fr_420px] lg:gap-14">
 
           {/* ── Left column ── */}
-          <div className="space-y-12 sm:space-y-16">
+          <div className="space-y-16 sm:space-y-20">
 
             {/* About */}
             <div>
               <p
-                className="mb-3 text-xs font-semibold uppercase tracking-[0.30em]"
+                className="mb-4 text-xs font-semibold uppercase tracking-[0.30em]"
                 style={{
                   background: "linear-gradient(90deg,#fbbf24,#e8902a)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
@@ -258,7 +267,7 @@ export default function DestinationPage() {
               >
                 About this journey
               </p>
-              <h2 className="mb-6 font-serif text-4xl font-semibold leading-tight text-white">
+              <h2 className="mb-7 font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
                 Why{" "}
                 <span
                   className="font-light italic"
@@ -270,13 +279,13 @@ export default function DestinationPage() {
                   {destination.name}?
                 </span>
               </h2>
-              <p className="text-base leading-relaxed text-white/55">{destination.description}</p>
+              <p className="text-base leading-[1.85] text-white/55 sm:text-lg">{destination.description}</p>
             </div>
 
             {/* Highlights */}
             <div>
               <p
-                className="mb-3 text-xs font-semibold uppercase tracking-[0.30em]"
+                className="mb-4 text-xs font-semibold uppercase tracking-[0.30em]"
                 style={{
                   background: "linear-gradient(90deg,#c084fc,#fbbf24)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
@@ -284,25 +293,25 @@ export default function DestinationPage() {
               >
                 What&apos;s included
               </p>
-              <h2 className="mb-8 font-serif text-4xl font-semibold leading-tight text-white">
+              <h2 className="mb-10 font-serif text-4xl font-semibold leading-tight text-white sm:text-5xl">
                 Trip highlights
               </h2>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 {destination.highlights.map((h, i) => {
                   const c = HIGHLIGHT_COLORS[i % HIGHLIGHT_COLORS.length]
                   return (
                     <div
                       key={i}
-                      className="flex items-start gap-4 rounded-2xl border p-5 transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
-                      style={{ background: c.bg, borderColor: c.border, boxShadow: `0 4px 20px ${c.glow}` }}
+                      className="flex items-start gap-5 rounded-2xl border p-6 transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+                      style={{ background: c.bg, borderColor: c.border, boxShadow: `0 4px 24px ${c.glow}` }}
                     >
                       <div
-                        className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl"
+                        className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl"
                         style={{ background: `${c.color}20`, border: `1px solid ${c.border}` }}
                       >
-                        <CheckCircle2 className="size-4" style={{ color: c.color }} />
+                        <CheckCircle2 className="size-5" style={{ color: c.color }} />
                       </div>
-                      <p className="text-sm leading-relaxed text-white/75">{h}</p>
+                      <p className="text-sm leading-relaxed text-white/75 sm:text-base">{h}</p>
                     </div>
                   )
                 })}
@@ -311,35 +320,34 @@ export default function DestinationPage() {
 
             {/* Promise strip */}
             <div
-              className="relative overflow-hidden rounded-3xl px-8 py-10 text-white"
+              className="relative overflow-hidden rounded-3xl px-8 py-12 text-white sm:px-12"
               style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)" }}
             >
-              {/* Subtle shimmer */}
               <div
                 className="pointer-events-none absolute inset-0 rounded-3xl opacity-20"
                 style={{ background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,255,255,0.25), transparent)" }}
               />
               <div className="relative">
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-3 flex items-center gap-2">
                   <Sparkles className="size-4 text-amber-300/70" />
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/55">
                     The Wanderlight promise
                   </p>
                 </div>
-                <h3 className="mb-8 font-serif text-2xl font-semibold">You&apos;re in safe hands</h3>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                <h3 className="mb-10 font-serif text-3xl font-semibold">You&apos;re in safe hands</h3>
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
                   {[
                     { icon: Shield,        title: "24/7 Support",        desc: "Our experts are available around the clock throughout your journey." },
                     { icon: Users,         title: "Personal curator",    desc: "A dedicated travel expert designs and manages your entire trip." },
                     { icon: HeartHandshake,title: "Best price guarantee",desc: "We match or beat any comparable itinerary — no hidden fees." },
                   ].map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="flex flex-col gap-3">
-                      <div className="flex size-9 items-center justify-center rounded-full bg-white/15">
-                        <Icon className="size-4 text-white" />
+                    <div key={title} className="flex flex-col gap-4">
+                      <div className="flex size-11 items-center justify-center rounded-full bg-white/15">
+                        <Icon className="size-5 text-white" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white">{title}</p>
-                        <p className="mt-1 text-xs leading-relaxed text-white/60">{desc}</p>
+                        <p className="text-base font-semibold text-white">{title}</p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-white/60">{desc}</p>
                       </div>
                     </div>
                   ))}
@@ -353,12 +361,12 @@ export default function DestinationPage() {
             <div className="sticky top-28">
               {!submitted ? (
                 <div
-                  className="rounded-3xl border border-white/10 p-7 shadow-2xl"
+                  className="rounded-3xl border border-white/10 p-8 shadow-2xl"
                   style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(24px)" }}
                 >
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <p
-                      className="mb-1 text-xs font-semibold uppercase tracking-[0.28em]"
+                      className="mb-1.5 text-xs font-semibold uppercase tracking-[0.28em]"
                       style={{
                         background: "linear-gradient(90deg,#fbbf24,#e8902a)",
                         WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
@@ -367,31 +375,31 @@ export default function DestinationPage() {
                       Book this trip
                     </p>
                     <h3 className="font-serif text-2xl font-semibold text-white">Enquire now</h3>
-                    <p className="mt-1.5 text-sm text-white/45">
+                    <p className="mt-2 text-sm text-white/45 leading-relaxed">
                       We respond within 24 hours with a personalised plan.
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-white/45">Full name *</label>
+                      <label className="mb-2 block text-xs font-medium text-white/45">Full name *</label>
                       <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className={inputCls} />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-white/45">Email address *</label>
+                      <label className="mb-2 block text-xs font-medium text-white/45">Email address *</label>
                       <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" className={inputCls} />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-white/45">Phone (optional)</label>
+                      <label className="mb-2 block text-xs font-medium text-white/45">Phone (optional)</label>
                       <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 98765 43210" className={inputCls} />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="mb-1.5 block text-xs font-medium text-white/45">Travel date</label>
+                        <label className="mb-2 block text-xs font-medium text-white/45">Travel date</label>
                         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} min={today} className={inputCls} />
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-medium text-white/45">Travelers</label>
+                        <label className="mb-2 block text-xs font-medium text-white/45">Travelers</label>
                         <select value={guests} onChange={(e) => setGuests(e.target.value)} className={inputCls}>
                           {[1,2,3,4,5,6,7,8].map((n) => (
                             <option key={n} value={n}>{n} {n === 1 ? "person" : "people"}</option>
@@ -400,7 +408,7 @@ export default function DestinationPage() {
                       </div>
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-medium text-white/45">Special requests (optional)</label>
+                      <label className="mb-2 block text-xs font-medium text-white/45">Special requests (optional)</label>
                       <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
                         placeholder="Anniversaries, dietary needs, dream experiences…"
                         className={`${inputCls} resize-none`}
@@ -409,7 +417,7 @@ export default function DestinationPage() {
 
                     {/* Price summary */}
                     <div
-                      className="rounded-2xl border border-amber-400/20 px-4 py-3"
+                      className="rounded-2xl border border-amber-400/20 px-5 py-4"
                       style={{ background: "rgba(251,191,36,0.07)" }}
                     >
                       <div className="flex items-baseline justify-between">
@@ -426,7 +434,7 @@ export default function DestinationPage() {
                           {destination.price}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-xs text-white/30">Starting price per person</p>
+                      <p className="mt-1 text-xs text-white/30">Starting price per person</p>
                     </div>
 
                     {error && (
