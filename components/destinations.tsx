@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -260,52 +260,23 @@ type Props = {
   searchQuery?: string
 }
 
-// Smooth cubic-bezier easing (ease-in-out-quart)
-function easeInOutQuart(t: number) {
-  return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
-}
-
 export function Destinations({ searchQuery = "" }: Props) {
   const [activeFilter, setActiveFilter] = useState("All")
   const [canScrollLeft,  setCanScrollLeft]  = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const animRef   = useRef<number | null>(null)
   const router    = useRouter()
 
-  // Cancel any in-flight animation on unmount
-  useEffect(() => () => { if (animRef.current) cancelAnimationFrame(animRef.current) }, [])
-
-  function animateScroll(targetX: number, duration = 480) {
+  function cardStep() {
     const el = scrollRef.current
-    if (!el) return
-    if (animRef.current !== null) cancelAnimationFrame(animRef.current)
-
-    const startX  = el.scrollLeft
-    const maxX    = el.scrollWidth - el.clientWidth
-    const endX    = Math.max(0, Math.min(targetX, maxX))
-    const delta   = endX - startX
-    if (Math.abs(delta) < 1) return
-
-    const startTime = performance.now()
-
-    function step(now: number) {
-      const elapsed  = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      el.scrollLeft  = startX + delta * easeInOutQuart(progress)
-      if (progress < 1) {
-        animRef.current = requestAnimationFrame(step)
-      } else {
-        animRef.current = null
-      }
-    }
-
-    animRef.current = requestAnimationFrame(step)
+    if (!el) return 340
+    const card = el.querySelector("article") as HTMLElement | null
+    return card ? card.offsetWidth + 20 : 340
   }
 
   function handleFilterChange(f: string) {
     setActiveFilter(f)
-    animateScroll(0, 300)
+    scrollRef.current?.scrollTo({ left: 0, behavior: "smooth" })
     setCanScrollLeft(false)
     setCanScrollRight(true)
   }
@@ -330,13 +301,11 @@ export function Destinations({ searchQuery = "" }: Props) {
   }
 
   function scrollPrev() {
-    const el = scrollRef.current
-    if (el) animateScroll(el.scrollLeft - 400)
+    scrollRef.current?.scrollBy({ left: -cardStep(), behavior: "smooth" })
   }
 
   function scrollNext() {
-    const el = scrollRef.current
-    if (el) animateScroll(el.scrollLeft + 400)
+    scrollRef.current?.scrollBy({ left: cardStep(), behavior: "smooth" })
   }
 
   function goToDestination(d: Destination) {
@@ -345,7 +314,7 @@ export function Destinations({ searchQuery = "" }: Props) {
 
   return (
     <section id="destinations" className="overflow-hidden py-16 sm:py-24">
-      {/* Header + filters */}
+      {/* All content inside one aligned container */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div>
           <p
@@ -394,60 +363,58 @@ export function Destinations({ searchQuery = "" }: Props) {
             </span>
           )}
         </div>
-      </div>
 
-      {/* Carousel */}
-      <div className="relative mt-10">
-        {/* Prev arrow — always rendered, fades in/out */}
-        <button
-          onClick={scrollPrev}
-          aria-label="Previous destinations"
-          className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:left-4 ${
-            canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none -translate-x-2"
-          }`}
-        >
-          <ChevronLeft className="size-5 text-white" />
-        </button>
-
-        {/* Next arrow — always rendered, fades in/out */}
-        <button
-          onClick={scrollNext}
-          aria-label="Next destinations"
-          className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:right-4 ${
-            canScrollRight && visible.length > 0 ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none translate-x-2"
-          }`}
-        >
-          <ChevronRight className="size-5 text-white" />
-        </button>
-
-        {/* Left fade — smooth opacity transition */}
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-20 bg-gradient-to-r from-[#0d0b1e] to-transparent transition-opacity duration-300"
-          style={{ opacity: canScrollLeft ? 1 : 0 }}
-        />
-        {/* Right fade */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-20 bg-gradient-to-l from-[#0d0b1e] to-transparent" />
-
-        {/* Scroll track — no snap, no scroll-smooth (handled by RAF animation) */}
-        {visible.length === 0 ? (
-          <div className="flex items-center justify-center py-20 text-center">
-            <div>
-              <p className="font-serif text-2xl text-white">No destinations found</p>
-              <p className="mt-2 text-white/50">Try a different search term or filter.</p>
-            </div>
-          </div>
-        ) : (
-          <div
-            ref={scrollRef}
-            onScroll={updateScrollState}
-            style={{ WebkitOverflowScrolling: "touch" }}
-            className="flex gap-5 overflow-x-auto px-6 pb-4 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        {/* Carousel — negative margin so it bleeds to the container edge,
+            scroll track padding re-aligns first card with the heading above */}
+        <div className="relative -mx-6 mt-10 overflow-hidden lg:-mx-8">
+          {/* Prev arrow */}
+          <button
+            onClick={scrollPrev}
+            aria-label="Previous destinations"
+            className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:left-4 ${
+              canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none -translate-x-2"
+            }`}
           >
+            <ChevronLeft className="size-5 text-white" />
+          </button>
+
+          {/* Next arrow */}
+          <button
+            onClick={scrollNext}
+            aria-label="Next destinations"
+            className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:shadow-2xl lg:right-4 ${
+              canScrollRight && visible.length > 0 ? "opacity-100 translate-x-0" : "opacity-0 pointer-events-none translate-x-2"
+            }`}
+          >
+            <ChevronRight className="size-5 text-white" />
+          </button>
+
+          {/* Left fade */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-20 bg-gradient-to-r from-[#0d0b1e] to-transparent transition-opacity duration-300"
+            style={{ opacity: canScrollLeft ? 1 : 0 }}
+          />
+          {/* Right fade */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-20 bg-gradient-to-l from-[#0d0b1e] to-transparent" />
+
+          {visible.length === 0 ? (
+            <div className="flex items-center justify-center py-20 text-center">
+              <div>
+                <p className="font-serif text-2xl text-white">No destinations found</p>
+                <p className="mt-2 text-white/50">Try a different search term or filter.</p>
+              </div>
+            </div>
+          ) : (
+            <div
+              ref={scrollRef}
+              onScroll={updateScrollState}
+              className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-4 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
             {visible.map((d) => (
               <article
                 key={d.name}
                 onClick={() => goToDestination(d)}
-                className="group relative w-64 flex-none cursor-pointer snap-start overflow-hidden rounded-3xl sm:w-80 lg:w-96"
+                className="group relative w-64 flex-none cursor-pointer snap-start overflow-hidden rounded-3xl transition-transform duration-300 hover:-translate-y-1 sm:w-80 lg:w-96"
               >
                 <div className="relative h-72 sm:h-[420px]">
                   <Image
@@ -462,31 +429,35 @@ export function Destinations({ searchQuery = "" }: Props) {
                     {d.tag}
                   </span>
 
-                  <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <div
+                    className="absolute right-4 top-4 rounded-full px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)" }}
+                  >
                     View details →
                   </div>
 
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
                     <div>
-                      <h3 className="font-serif text-2xl font-semibold text-background">
+                      <h3 className="font-serif text-2xl font-semibold text-white">
                         {d.name}
                       </h3>
-                      <p className="text-sm text-background/80">{d.country}</p>
-                      <div className="mt-2 flex items-center gap-1 text-background/90">
+                      <p className="text-sm text-white/80">{d.country}</p>
+                      <div className="mt-2 flex items-center gap-1">
                         <Star className="size-4 fill-current text-amber-400" aria-hidden="true" />
-                        <span className="text-sm font-medium">{d.rating}</span>
+                        <span className="text-sm font-medium text-white">{d.rating}</span>
                       </div>
                     </div>
-                    <div className="text-right text-background">
-                      <p className="text-xs text-background/70">from</p>
-                      <p className="font-serif text-xl font-semibold">{d.price}</p>
+                    <div className="text-right">
+                      <p className="text-xs text-white/60">from</p>
+                      <p className="font-serif text-xl font-semibold text-white">{d.price}</p>
                     </div>
                   </div>
                 </div>
               </article>
             ))}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )

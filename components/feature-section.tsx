@@ -62,25 +62,97 @@ export function FeatureSection() {
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 py-16 sm:px-6 sm:gap-14 sm:py-24 lg:grid-cols-2 lg:px-8">
 
-        {/* Image with glowing gradient frame */}
-        <div className="relative">
+        {/* Image — editorial redesign */}
+        <div className="relative pb-8 pr-4 pt-4 lg:pb-10 lg:pr-6 lg:pt-6">
+
+          {/* Rotated back card — depth layer */}
           <div
-            className="absolute -inset-1 rounded-3xl opacity-70 blur-md"
-            style={{ background: "linear-gradient(135deg, #7c3f96 0%, #e8902a 50%, #fbbf24 100%)" }}
+            className="absolute inset-0 rounded-3xl"
+            style={{
+              background: "linear-gradient(135deg,#7c3f96 0%,#2e1b50 100%)",
+              transform: "rotate(-3deg) scale(0.96)",
+              opacity: 0.45,
+            }}
           />
-          <div className="relative h-80 overflow-hidden rounded-3xl lg:h-[32rem]">
-            <Image
-              src="/images/feature-trip.jpg"
-              alt="Friends jumping with joy in the snow-capped mountains"
-              fill
-              className="object-cover object-center"
-            />
-            {/* Subtle inner overlay for depth */}
+
+          {/* Main image card */}
+          <div
+            className="relative overflow-hidden rounded-3xl"
+            style={{ boxShadow: "0 40px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.07)" }}
+          >
+            <div className="relative h-80 lg:h-[30rem]">
+              <Image
+                src="/images/feature-trip.jpg"
+                alt="Friends jumping with joy in the snow-capped mountains"
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            </div>
+
+            {/* Frosted glass bottom overlay */}
             <div
-              className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(13,11,30,0.35) 0%, transparent 50%)" }}
-            />
+              className="absolute inset-x-4 bottom-4 rounded-2xl px-5 py-4"
+              style={{
+                background: "rgba(13,11,30,0.78)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(255,255,255,0.10)",
+              }}
+            >
+              <p
+                className="mb-2 text-xs font-semibold uppercase tracking-[0.22em]"
+                style={{
+                  background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                }}
+              >
+                Real adventures. Real memories.
+              </p>
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-serif text-base font-semibold text-white">Spiti Valley, India</p>
+                  <p className="text-xs text-white/45">Group of 5 · 8 days · Mountains</p>
+                </div>
+                <div
+                  className="flex shrink-0 items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/12 px-3 py-1.5"
+                >
+                  <span className="text-sm text-amber-400">★</span>
+                  <span className="text-sm font-semibold text-white">5.0</span>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Floating stat — top right */}
+          <div
+            className="absolute right-0 top-0 rounded-2xl px-4 py-3 text-center shadow-2xl"
+            style={{
+              background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 100%)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              boxShadow: "0 12px 32px rgba(124,63,150,0.45)",
+            }}
+          >
+            <p className="font-serif text-2xl font-bold text-white">500+</p>
+            <p className="text-xs text-white/55">trips planned</p>
+          </div>
+
+          {/* Floating stat — bottom left */}
+          <div
+            className="absolute bottom-0 left-0 rounded-2xl px-4 py-3 shadow-2xl"
+            style={{
+              background: "rgba(13,11,30,0.92)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.10)",
+            }}
+          >
+            <p className="font-serif text-2xl font-bold text-white">
+              4.9 <span className="text-amber-400">★</span>
+            </p>
+            <p className="text-xs text-white/45">avg. rating</p>
+          </div>
+
         </div>
 
         {/* Content */}

@@ -20,6 +20,7 @@ type Props = { onBookingOpen: () => void }
 export function SiteHeader({ onBookingOpen }: Props) {
   const [open,       setOpen]       = useState(false)
   const [hidden,     setHidden]     = useState(false)
+  const [scrolled,   setScrolled]   = useState(false)
   const [activeTab,  setActiveTab]  = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchVal,  setSearchVal]  = useState("")
@@ -31,13 +32,15 @@ export function SiteHeader({ onBookingOpen }: Props) {
   const desktopContainer = useRef<HTMLDivElement>(null)
   const mobileContainer  = useRef<HTMLDivElement>(null)
 
-  // Hide while scrolling, show when idle
+  // Hide while scrolling, show when idle; track if scrolled past hero
   useEffect(() => {
     const handler = () => {
       setHidden(true)
+      setScrolled(window.scrollY > 60)
       if (idleTimer.current) clearTimeout(idleTimer.current)
       idleTimer.current = setTimeout(() => setHidden(false), 500)
     }
+    setScrolled(window.scrollY > 60)
     window.addEventListener("scroll", handler, { passive: true })
     return () => {
       window.removeEventListener("scroll", handler)
@@ -113,15 +116,10 @@ export function SiteHeader({ onBookingOpen }: Props) {
     closeSearch()
   }
 
-  // Live suggestions
+  // Live suggestions — name-only matching for precision
   const query = searchVal.trim().toLowerCase()
   const suggestions = query.length > 0
-    ? allDestinations.filter((d) =>
-        d.name.toLowerCase().includes(query) ||
-        d.country.toLowerCase().includes(query) ||
-        d.tag.toLowerCase().includes(query) ||
-        d.category.toLowerCase().includes(query)
-      ).slice(0, 6)
+    ? allDestinations.filter((d) => d.name.toLowerCase().includes(query)).slice(0, 6)
     : []
   const noResults = query.length > 0 && suggestions.length === 0
 
@@ -130,7 +128,14 @@ export function SiteHeader({ onBookingOpen }: Props) {
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         hidden ? "-translate-y-full" : "translate-y-0"
       }`}
-      style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, transparent 100%)" }}
+      style={scrolled ? {
+        background: "rgba(13,11,30,0.22)",
+        backdropFilter: "blur(28px)",
+        WebkitBackdropFilter: "blur(28px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+      } : {
+        background: "linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, transparent 100%)",
+      }}
     >
       <nav className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 lg:px-8">
 
@@ -250,16 +255,17 @@ export function SiteHeader({ onBookingOpen }: Props) {
                 ) : (
                   <div className="px-5 py-8 text-center">
                     <MapPin className="mx-auto mb-3 size-8 text-white/20" />
-                    <p className="text-sm font-medium text-white/65">
-                      No destinations found for &ldquo;{searchVal}&rdquo;
+                    <p className="text-sm font-semibold text-white/75">
+                      Didn&apos;t find what you&apos;re looking for?
                     </p>
                     <p className="mt-1 text-xs text-white/35">
-                      We couldn&apos;t find a match — but there&apos;s so much more to discover.
+                      No destination named &ldquo;{searchVal}&rdquo; found.
                     </p>
                     <button
                       type="button"
                       onClick={() => { router.push("/destinations"); closeSearch() }}
-                      className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-5 py-2 text-xs font-medium text-white/65 transition-all hover:bg-white/10 hover:text-white"
+                      className="mt-4 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+                      style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)" }}
                     >
                       Explore all destinations →
                     </button>
@@ -375,16 +381,17 @@ export function SiteHeader({ onBookingOpen }: Props) {
               ) : (
                 <div className="px-5 py-7 text-center">
                   <MapPin className="mx-auto mb-3 size-7 text-white/20" />
-                  <p className="text-sm font-medium text-white/60">
-                    No results for &ldquo;{searchVal}&rdquo;
+                  <p className="text-sm font-semibold text-white/75">
+                    Didn&apos;t find what you&apos;re looking for?
                   </p>
                   <p className="mt-1 text-xs text-white/35">
-                    We couldn&apos;t find a match — explore all destinations.
+                    No destination named &ldquo;{searchVal}&rdquo; found.
                   </p>
                   <button
                     type="button"
                     onClick={() => { router.push("/destinations"); closeSearch() }}
-                    className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-5 py-2 text-xs font-medium text-white/65 transition-all hover:bg-white/10 hover:text-white"
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+                    style={{ background: "linear-gradient(135deg,#1b1a5e 0%,#7c3f96 50%,#e8902a 100%)" }}
                   >
                     Explore all destinations →
                   </button>

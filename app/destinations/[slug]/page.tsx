@@ -199,17 +199,17 @@ export default function DestinationPage() {
         className="border-b border-white/8 backdrop-blur-xl"
         style={{ background: "rgba(255,255,255,0.04)" }}
       >
-        <div className="mx-auto max-w-7xl overflow-x-auto px-6 py-5 lg:px-8">
-          <div className="flex min-w-max items-center gap-8 sm:min-w-0">
+        <div className="mx-auto max-w-7xl px-5 py-5 lg:px-8">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-4 sm:flex sm:items-center sm:gap-8">
             {[
-              { icon: Clock,    label: "Duration",         value: destination.duration, color: "#fbbf24" },
-              { icon: Calendar, label: "Best time",        value: destination.bestTime, color: "#c084fc" },
-              { icon: Star,     label: "Guest rating",     value: `${destination.rating} / 5.0`, color: "#34d399" },
+              { icon: Clock,    label: "Duration",     value: destination.duration,            color: "#fbbf24" },
+              { icon: Calendar, label: "Best time",    value: destination.bestTime,            color: "#c084fc" },
+              { icon: Star,     label: "Guest rating", value: `${destination.rating} / 5.0`,  color: "#34d399" },
             ].map(({ icon: Icon, label, value, color }, i) => (
               <div key={label} className="flex items-center gap-3">
-                {i > 0 && <div className="mr-5 h-8 w-px bg-white/10" />}
+                {i > 0 && <div className="mr-5 hidden h-8 w-px bg-white/10 sm:block" />}
                 <div
-                  className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-xl"
                   style={{ background: `${color}14`, border: `1px solid ${color}28` }}
                 >
                   <Icon className="size-4" style={{ color }} />
@@ -221,12 +221,12 @@ export default function DestinationPage() {
               </div>
             ))}
 
-            <div className="ml-auto pl-8">
+            <div className="col-span-2 border-t border-white/8 pt-4 sm:ml-auto sm:border-none sm:pt-0 sm:pl-8">
               <p className="text-xs text-white/35">Starting from</p>
               <p
                 className="font-serif font-semibold leading-none"
                 style={{
-                  fontSize: "clamp(1.6rem,3vw,2.2rem)",
+                  fontSize: "clamp(1.5rem,3vw,2.2rem)",
                   background: "linear-gradient(90deg,#fbbf24,#e8902a)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
                 }}
@@ -241,11 +241,11 @@ export default function DestinationPage() {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_400px]">
+      <div className="relative mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="grid grid-cols-1 gap-12 sm:gap-16 lg:grid-cols-[1fr_400px]">
 
           {/* ── Left column ── */}
-          <div className="space-y-16">
+          <div className="space-y-12 sm:space-y-16">
 
             {/* About */}
             <div>

@@ -55,7 +55,9 @@ export function Newsletter() {
             className="mx-auto mt-10 flex max-w-lg flex-col gap-3 sm:flex-row"
           >
             <label className="flex-1">
-              <span className="sr-only">Email address</span>
+              <span className="mb-2 block text-left text-xs font-medium text-white/60">
+                Email address <span className="text-amber-400">*</span>
+              </span>
               <input
                 type="email"
                 required
