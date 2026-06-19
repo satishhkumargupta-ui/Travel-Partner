@@ -62,40 +62,46 @@ const RESPOND_TOOL: OpenAI.Chat.Completions.ChatCompletionTool = {
 
 type ChatMsg = { from: "bot" | "user"; text: string }
 
+async function callGroq(openaiMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[]) {
+  const client = new OpenAI({
+    apiKey: process.env.atlas,
+    baseURL: "https://api.groq.com/openai/v1",
+  })
+  const response = await client.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    max_tokens: 500,
+    tools: [RESPOND_TOOL],
+    tool_choice: "required",
+    messages: openaiMessages,
+  })
+  const toolCall = response.choices[0]?.message?.tool_calls?.[0]
+  if (!toolCall || toolCall.type !== "function") throw new Error("No tool call in response")
+  return JSON.parse(toolCall.function.arguments) as {
+    text: string
+    links?: { label: string; href: string }[]
+    chips?: string[]
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const client = new OpenAI({
-      apiKey: process.env.atlas,
-      baseURL: "https://api.groq.com/openai/v1",
-    })
-
     const { messages }: { messages: ChatMsg[] } = await req.json()
-
-    const history = messages.slice(-20)
 
     const openaiMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       { role: "system", content: SYSTEM_PROMPT },
-      ...history.map((m) => ({
+      ...messages.slice(-20).map((m) => ({
         role: m.from === "user" ? ("user" as const) : ("assistant" as const),
         content: m.text,
       })),
     ]
 
-    const response = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      max_tokens: 500,
-      tools: [RESPOND_TOOL],
-      tool_choice: "required",
-      messages: openaiMessages,
-    })
-
-    const toolCall = response.choices[0]?.message?.tool_calls?.[0]
-    if (!toolCall || toolCall.type !== "function") throw new Error("No tool call in response")
-
-    const result = JSON.parse(toolCall.function.arguments) as {
-      text: string
-      links?: { label: string; href: string }[]
-      chips?: string[]
+    let result
+    try {
+      result = await callGroq(openaiMessages)
+    } catch {
+      // retry once on transient failure
+      await new Promise(r => setTimeout(r, 800))
+      result = await callGroq(openaiMessages)
     }
 
     return NextResponse.json(result)
@@ -104,17 +110,13 @@ export async function POST(req: NextRequest) {
     console.error("[Atlas API]", msg)
     const isQuota = msg.includes("429")
     const isMissingKey = msg.toLowerCase().includes("apikey") || msg.toLowerCase().includes("api key") || msg.toLowerCase().includes("missing")
-    return NextResponse.json(
-      {
-        text: isQuota
-          ? "Our AI assistant is temporarily unavailable due to a service limit. Please contact us directly and we'll be happy to help! 😊"
-          : isMissingKey
-          ? "Atlas is not configured yet — the API key is missing on the server."
-          : "I'm having a little trouble right now — please try again in a moment! 😊",
-        links: [{ label: "Contact us →", href: "/plan" }],
-        _debug: msg,
-      },
-      { status: 200 }
-    )
+    return NextResponse.json({
+      text: isQuota
+        ? "Our AI assistant is temporarily busy — please try again in a moment! 😊"
+        : isMissingKey
+        ? "Atlas is not configured yet — the API key is missing on the server."
+        : "I'm having a little trouble right now — please try again! 😊",
+      links: [{ label: "Contact us →", href: "/plan" }],
+    })
   }
 }
