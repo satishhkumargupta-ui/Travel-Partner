@@ -65,7 +65,7 @@ type ChatMsg = { from: "bot" | "user"; text: string }
 export async function POST(req: NextRequest) {
   try {
     const client = new OpenAI({
-      apiKey: process.env.atlaskey,
+      apiKey: process.env.atlas,
       baseURL: "https://api.groq.com/openai/v1",
     })
 
