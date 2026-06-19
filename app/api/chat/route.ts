@@ -100,13 +100,21 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(result)
   } catch (err: unknown) {
-    console.error("[Wren API]", err)
-    const isQuota = err instanceof Error && err.message.includes("429")
-    return NextResponse.json({
-      text: isQuota
-        ? "Our AI assistant is temporarily unavailable due to a service limit. Please contact us directly and we'll be happy to help! 😊"
-        : "I'm having a little trouble right now — please try again in a moment, or reach us directly at hello@wanderlight.com 😊",
-      links: [{ label: "Contact us →", href: "/plan" }],
-    })
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error("[Atlas API]", msg)
+    const isQuota = msg.includes("429")
+    const isMissingKey = msg.toLowerCase().includes("apikey") || msg.toLowerCase().includes("api key") || msg.toLowerCase().includes("missing")
+    return NextResponse.json(
+      {
+        text: isQuota
+          ? "Our AI assistant is temporarily unavailable due to a service limit. Please contact us directly and we'll be happy to help! 😊"
+          : isMissingKey
+          ? "Atlas is not configured yet — the API key is missing on the server."
+          : "I'm having a little trouble right now — please try again in a moment! 😊",
+        links: [{ label: "Contact us →", href: "/plan" }],
+        _debug: msg,
+      },
+      { status: 200 }
+    )
   }
 }
