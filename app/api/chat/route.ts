@@ -1,11 +1,6 @@
 import OpenAI from "openai"
 import { NextRequest, NextResponse } from "next/server"
 
-const client = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-})
-
 const SYSTEM_PROMPT = `You are Wren, a warm and knowledgeable travel assistant for Wanderlight — a premium travel curation company.
 
 ABOUT WANDERLIGHT:
@@ -68,6 +63,11 @@ const RESPOND_TOOL: OpenAI.Chat.Completions.ChatCompletionTool = {
 type ChatMsg = { from: "bot" | "user"; text: string }
 
 export async function POST(req: NextRequest) {
+  const client = new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: "https://api.groq.com/openai/v1",
+  })
+
   try {
     const { messages }: { messages: ChatMsg[] } = await req.json()
 
