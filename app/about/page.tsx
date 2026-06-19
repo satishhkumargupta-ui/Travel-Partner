@@ -69,6 +69,7 @@ const team = [
     role: "Founder & Lead Travel Curator",
     bio: "A lifelong traveller who has visited 60+ countries, Satish founded Wanderlight with the belief that truly memorable travel requires human expertise, not algorithms.",
     gradient: "linear-gradient(135deg,#1b1a5e,#7c3f96,#e8902a)",
+    image: "/images/feature-trip.jpg",
   },
   {
     initials: "AM",
@@ -76,6 +77,7 @@ const team = [
     role: "Head of Destination Research",
     bio: "Former travel journalist turned curator, Anika oversees our destination portfolio and ensures every recommendation reflects the very best a place has to offer.",
     gradient: "linear-gradient(135deg,#7c3f96,#c084fc,#60a5fa)",
+    image: "/images/dest-kyoto.png",
   },
   {
     initials: "RV",
@@ -83,6 +85,7 @@ const team = [
     role: "Client Experience Lead",
     bio: "Rajan is the first voice our travellers hear and the last to sign off on every itinerary — his obsession with detail is the reason our reviews average 4.9 stars.",
     gradient: "linear-gradient(135deg,#34d399,#60a5fa,#c084fc)",
+    image: "/images/dest-santorini.png",
   },
 ]
 
@@ -294,6 +297,101 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Group Tours & Travel Guides */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 border-y border-white/6"
+          style={{ background: "rgba(255,255,255,0.015)" }}
+        />
+        <div className="relative mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+          <p
+            className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-center"
+            style={{
+              background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}
+          >
+            Explore together
+          </p>
+          <h2 className="font-serif text-4xl font-semibold text-white text-center sm:text-5xl mb-4">
+            Group Tours &amp; Travel Guides
+          </h2>
+          <p className="mx-auto mb-12 max-w-xl text-center text-sm leading-relaxed text-white/55">
+            Small groups, expert local guides, and carefully curated routes — perfect for solo travellers
+            seeking connection or friends who want a seamless, unforgettable adventure.
+          </p>
+
+          {/* Photo grid */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {/* Wide banner */}
+            <div className="relative col-span-2 h-56 overflow-hidden rounded-2xl sm:h-72">
+              <Image
+                src="/images/feature-trip.jpg"
+                alt="Group adventure tour"
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+              <span className="absolute bottom-4 left-4 rounded-full bg-black/35 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                Adventure Groups
+              </span>
+            </div>
+
+            {/* Row 2 */}
+            <div className="relative h-40 overflow-hidden rounded-2xl sm:h-52">
+              <Image
+                src="/images/dest-marrakech.png"
+                alt="Cultural group tour"
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-2.5 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+                Cultural Tours
+              </span>
+            </div>
+            <div className="relative h-40 overflow-hidden rounded-2xl sm:h-52">
+              <Image
+                src="/images/dest-santorini.png"
+                alt="Island group escape"
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-2.5 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+                Island Escapes
+              </span>
+            </div>
+
+            {/* Row 3 */}
+            <div className="relative h-40 overflow-hidden rounded-2xl sm:h-52">
+              <Image
+                src="/images/dest-alps.png"
+                alt="Mountain guide trek"
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-2.5 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+                Mountain Treks
+              </span>
+            </div>
+            <div className="relative h-40 overflow-hidden rounded-2xl sm:h-52">
+              <Image
+                src="/images/dest-kyoto.png"
+                alt="Temple trail guided tour"
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-black/35 px-2.5 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+                Temple Trails
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Team */}
       <section id="team" className="relative mx-auto max-w-5xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
         <p
@@ -312,26 +410,40 @@ export default function AboutPage() {
           {team.map((member) => (
             <div
               key={member.name}
-              className="rounded-2xl border border-white/10 p-6 text-center transition-all duration-300 hover:border-white/20"
+              className="overflow-hidden rounded-2xl border border-white/10 transition-all duration-300 hover:border-white/20"
               style={{ background: "rgba(255,255,255,0.04)", backdropFilter: "blur(20px)" }}
             >
-              <div
-                className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full"
-                style={{ background: member.gradient }}
-              >
-                <span className="font-serif text-2xl font-semibold text-white">{member.initials}</span>
+              {/* Photo frame */}
+              <div className="relative h-56 w-full">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                {/* Initials overlay as fallback accent */}
+                <div
+                  className="absolute bottom-4 left-4 flex size-10 items-center justify-center rounded-full"
+                  style={{ background: member.gradient }}
+                >
+                  <span className="font-serif text-sm font-semibold text-white">{member.initials}</span>
+                </div>
               </div>
-              <h3 className="font-serif text-lg font-semibold text-white">{member.name}</h3>
-              <p
-                className="mt-0.5 text-xs font-medium"
-                style={{
-                  background: "linear-gradient(90deg,#fbbf24,#e8902a)",
-                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                }}
-              >
-                {member.role}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-white/50">{member.bio}</p>
+              {/* Info */}
+              <div className="p-6 text-center">
+                <h3 className="font-serif text-lg font-semibold text-white">{member.name}</h3>
+                <p
+                  className="mt-0.5 text-xs font-medium"
+                  style={{
+                    background: "linear-gradient(90deg,#fbbf24,#e8902a)",
+                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+                  }}
+                >
+                  {member.role}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-white/50">{member.bio}</p>
+              </div>
             </div>
           ))}
         </div>
