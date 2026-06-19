@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Heart, Globe, Compass, ShieldCheck, HeartHandshake, ArrowRight } from "lucide-react"
@@ -91,6 +91,21 @@ const team = [
 
 export default function AboutPage() {
   const [contactOpen, setContactOpen] = useState(false)
+  const [mouseVisible, setMouseVisible] = useState(true)
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setMouseVisible(false)
+      if (scrollTimer.current) clearTimeout(scrollTimer.current)
+      scrollTimer.current = setTimeout(() => setMouseVisible(true), 1000)
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (scrollTimer.current) clearTimeout(scrollTimer.current)
+    }
+  }, [])
 
   return (
     <div
@@ -151,7 +166,10 @@ export default function AboutPage() {
             extraordinary experiences were buried under generic package deals. We set out to change that.
           </p>
 
-          <div className="mt-14 flex justify-center">
+          <div
+            className="mt-14 flex justify-center transition-all duration-500"
+            style={{ opacity: mouseVisible ? 1 : 0, transform: mouseVisible ? "translateY(0)" : "translateY(6px)" }}
+          >
             <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/25 pt-1.5">
               <div
                 className="h-2 w-0.5 rounded-full bg-white/60"
