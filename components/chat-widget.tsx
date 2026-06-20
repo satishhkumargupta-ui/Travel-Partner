@@ -131,7 +131,7 @@ export function ChatWidget() {
               <div key={msg.id} className={`flex flex-col gap-2 ${msg.from === "user" ? "items-end" : "items-start"}`}>
                 {/* Bubble */}
                 <div
-                  className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
+                  className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line break-words ${
                     msg.from === "user"
                       ? "rounded-br-sm text-white"
                       : "rounded-bl-sm border border-white/8 text-white/85"
