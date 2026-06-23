@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { VisitorCounter } from "./visitor-counter"
 
 const columns = [
   {
@@ -33,14 +34,21 @@ const columns = [
 type Props = { onContactOpen: () => void }
 
 export function SiteFooter({ onContactOpen }: Props) {
-  const [visitorCount, setVisitorCount] = useState(8732)
+  const [visitorCount, setVisitorCount] = useState(45000)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisitorCount((current) => current + Math.floor(Math.random() * 3))
-    }, 2200)
+    // Fetch real visitor count from API
+    const fetchVisitorCount = async () => {
+      try {
+        const response = await fetch('/api/visitors')
+        const data = await response.json()
+        setVisitorCount(data.count)
+      } catch (error) {
+        console.error('Failed to fetch visitor count:', error)
+      }
+    }
 
-    return () => clearInterval(interval)
+    fetchVisitorCount()
   }, [])
 
   return (
