@@ -6,6 +6,7 @@ import { Hero } from "@/components/hero"
 import { Destinations } from "@/components/destinations"
 import { FeatureSection } from "@/components/feature-section"
 import { Testimonials } from "@/components/testimonials"
+import { VisitorCounter } from "@/components/visitor-counter"
 import { Newsletter } from "@/components/newsletter"
 import { SiteFooter } from "@/components/site-footer"
 import { ContactModal } from "@/components/contact-modal"
@@ -28,6 +29,7 @@ export default function Page() {
       <Destinations searchQuery={searchQuery} />
       <FeatureSection />
       <Testimonials />
+      <VisitorCounter />
       <Newsletter />
       <SiteFooter onContactOpen={() => setContactOpen(true)} />
 

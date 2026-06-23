@@ -112,6 +112,9 @@ export default function PlanPage() {
   const inputCls =
     "w-full rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-amber-400/45 focus:ring-1 focus:ring-amber-400/20 transition-all [color-scheme:dark] backdrop-blur-sm"
 
+  const selectCls =
+    "w-full rounded-xl border border-white/12 bg-transparent px-4 py-3 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-amber-400/45 focus:ring-1 focus:ring-amber-400/20 transition-all [color-scheme:dark] backdrop-blur-sm"
+
   return (
     <div
       className="min-h-screen"
@@ -223,7 +226,7 @@ export default function PlanPage() {
                     <div className="space-y-4">
                       <div>
                         <label className="mb-2 block text-xs font-medium text-white/45">Where would you like to go?</label>
-                        <select value={form.destination} onChange={(e) => patch({ destination: e.target.value })} className={inputCls}>
+                        <select value={form.destination} onChange={(e) => patch({ destination: e.target.value })} className={selectCls} style={{ background: "transparent" }}>
                           <option value="">Choose a destination…</option>
                           {allDestinations.map((d) => (
                             <option key={d.name} value={`${d.name}, ${d.country}`}>{d.name}, {d.country}</option>
@@ -242,7 +245,7 @@ export default function PlanPage() {
                           <label className="mb-2 flex items-center gap-1.5 text-xs font-medium text-white/45">
                             <Users className="size-3.5" /> Travelers
                           </label>
-                          <select value={form.travelers} onChange={(e) => patch({ travelers: e.target.value })} className={inputCls}>
+                          <select value={form.travelers} onChange={(e) => patch({ travelers: e.target.value })} className={selectCls} style={{ background: "transparent" }}>
                             {[1,2,3,4,5,6,7,8].map((n) => (
                               <option key={n} value={n}>{n} {n === 1 ? "person" : "people"}</option>
                             ))}

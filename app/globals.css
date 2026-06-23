@@ -167,4 +167,30 @@
   html {
     @apply font-sans;
   }
+
+  select {
+    color-scheme: dark;
+    background-color: rgba(13,11,30,0.35) !important;
+    background-image: none !important;
+    color: white !important;
+    border-color: rgba(255,255,255,0.35) !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+
+  select option {
+    color: white !important;
+    background-color: rgba(13,11,30,0.95) !important;
+  }
+
+  select option:hover,
+  select option:focus {
+    background-color: rgba(255,255,255,0.08) !important;
+  }
+
+  select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 white;
+  }
 }

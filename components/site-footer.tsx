@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 
 const columns = [
   {
@@ -32,6 +33,16 @@ const columns = [
 type Props = { onContactOpen: () => void }
 
 export function SiteFooter({ onContactOpen }: Props) {
+  const [visitorCount, setVisitorCount] = useState(8732)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisitorCount((current) => current + Math.floor(Math.random() * 3))
+    }, 2200)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <footer
       className="relative"
@@ -129,9 +140,14 @@ export function SiteFooter({ onContactOpen }: Props) {
         <div className="mt-14 flex flex-col items-center gap-4 border-t border-white/8 pt-8 sm:flex-row sm:justify-between">
 
           {/* Copyright */}
-          <p className="text-xs text-white/25">
-            &copy; {new Date().getFullYear()} Wanderlight. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
+            <p className="text-xs text-white/25">
+              &copy; {new Date().getFullYear()} Wanderlight. All rights reserved.
+            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300/80">
+              {`${visitorCount.toLocaleString()} live visitors now`}
+            </p>
+          </div>
 
           {/* Social icon — centre on mobile, middle on desktop */}
           <a
